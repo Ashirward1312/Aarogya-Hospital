@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useMemo, useState } from "react";
 import {
   FiUser,
   FiPhoneCall,
@@ -10,7 +10,127 @@ import {
 } from "react-icons/fi";
 import { Link } from "react-router-dom";
 
+/* -----------------------------
+WHATSAPP NUMBERS (wa.me format)
+----------------------------- */
+const WHATSAPP_1 = "919827198000"; // +91 98271 98000
+const WHATSAPP_2 = "918120012121"; // +91 81200 12121
+
+/* -----------------------------
+WHATSAPP MODAL (2 numbers)
+----------------------------- */
+const WhatsAppModal = ({ open, onClose, message }) => {
+  if (!open) return null;
+
+  const openWhatsApp = (number) => {
+    const url = `https://wa.me/${number}?text=${encodeURIComponent(message)}`;
+    window.open(url, "_blank", "noopener,noreferrer");
+  };
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 px-4">
+      <div className="w-full max-w-md rounded-2xl bg-white shadow-xl border border-slate-200 p-5">
+        <div className="flex items-center justify-between mb-3">
+          <h3 className="text-sm font-semibold text-slate-900 uppercase">
+            SEND APPOINTMENT REQUEST
+          </h3>
+          <button
+            type="button"
+            onClick={onClose}
+            className="h-7 w-7 flex items-center justify-center rounded-full border border-slate-200 text-xs text-slate-500 hover:bg-slate-50"
+          >
+            ×
+          </button>
+        </div>
+
+        <div className="rounded-lg border border-slate-200 bg-slate-50 p-3 mb-4">
+          <p className="text-[11px] font-semibold text-slate-500 uppercase mb-1">
+            Preview
+          </p>
+          <pre className="whitespace-pre-wrap text-[11px] text-slate-700 leading-relaxed">
+            {message}
+          </pre>
+        </div>
+
+        <div className="grid grid-cols-1 gap-2">
+          <button
+            type="button"
+            onClick={() => openWhatsApp(WHATSAPP_1)}
+            className="w-full rounded-md bg-green-600 px-4 py-2 text-xs font-semibold text-white hover:bg-green-700 transition uppercase"
+          >
+            WhatsApp 98271 98000
+          </button>
+
+          <button
+            type="button"
+            onClick={() => openWhatsApp(WHATSAPP_2)}
+            className="w-full rounded-md border border-green-200 bg-white px-4 py-2 text-xs font-semibold text-green-700 hover:bg-green-50 transition uppercase"
+          >
+            WhatsApp 81200 12121
+          </button>
+
+          <button
+            type="button"
+            onClick={onClose}
+            className="w-full rounded-md border border-slate-200 bg-white px-4 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50 transition uppercase"
+          >
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const AppointmentPage = () => {
+  //  Meta Title + Meta Description + Canonical + OG (FIXED)
+  React.useEffect(() => {
+    const pageTitle = "Book Doctor Appointment | Aarogya Hospital";
+    document.title = pageTitle;
+
+    const descriptionContent =
+      "Book an appointment with expert doctors at Aarogya Hospital Raipur. Get quality healthcare, advanced treatment, and compassionate care.";
+
+    let meta = document.querySelector('meta[name="description"]');
+    if (!meta) {
+      meta = document.createElement("meta");
+      meta.setAttribute("name", "description");
+      document.head.appendChild(meta);
+    }
+    meta.setAttribute("content", descriptionContent);
+
+    //  Canonical Tag (APPOINTMENT)
+    const canonicalUrl = "https://www.aarogyahospitalraipur.com/appointment";
+    let canonical = document.querySelector('link[rel="canonical"]');
+    if (!canonical) {
+      canonical = document.createElement("link");
+      canonical.setAttribute("rel", "canonical");
+      document.head.appendChild(canonical);
+    }
+    canonical.setAttribute("href", canonicalUrl);
+
+    //  OG Meta Tags
+    const setOg = (property, content) => {
+      let tag = document.querySelector(`meta[property="${property}"]`);
+      if (!tag) {
+        tag = document.createElement("meta");
+        tag.setAttribute("property", property);
+        document.head.appendChild(tag);
+      }
+      tag.setAttribute("content", content);
+    };
+
+    setOg("og:type", "website");
+    setOg("og:url", "https://www.aarogyahospitalraipur.com/appointment");
+    setOg("og:title", "Book Doctor Appointment | Aarogya Hospital");
+    setOg("og:description", "Book an appointment with expert doctors at Aarogya Hospital Raipur. Get quality healthcare, advanced treatment, and compassionate care.");
+    setOg(
+      "og:image",
+      "https://www.aarogyahospitalraipur.com/assets/logo1-BEkNzzrJ.jpg"
+    );
+    setOg("og:site_name", "Aarogya Hospital Raipur");
+  }, []);
+
   const [formData, setFormData] = useState({
     fullName: "",
     phone: "",
@@ -24,6 +144,44 @@ const AppointmentPage = () => {
     message: "",
   });
 
+  const [waOpen, setWaOpen] = useState(false);
+  const [waMessage, setWaMessage] = useState("");
+
+  const resolvePayload = (data) => {
+    const department =
+      data.department === "other" && data.customDepartment
+        ? data.customDepartment
+        : data.department;
+
+    const timeSlot =
+      data.timeSlot === "custom" && data.customTimeSlot
+        ? data.customTimeSlot
+        : data.timeSlot;
+
+    return { ...data, department, timeSlot };
+  };
+
+  const timeSlotLabel = useMemo(() => {
+    const t = formData.timeSlot;
+    if (t === "morning") return "09:00 AM – 11:00 AM (Morning)";
+    if (t === "midday") return "11:00 AM – 02:00 PM";
+    if (t === "evening") return "05:00 PM – 08:00 PM (Evening)";
+    if (t === "custom") return formData.customTimeSlot || "CUSTOM";
+    return "";
+  }, [formData.timeSlot, formData.customTimeSlot]);
+
+  const departmentLabel = useMemo(() => {
+    const d = formData.department;
+    if (d === "gyne") return "Obstetrics, Gynecology & Infertility";
+    if (d === "ivf") return "IVF & Test Tube Baby";
+    if (d === "surgery") return "Laparoscopic & General Surgery";
+    if (d === "medicine") return "Internal Medicine";
+    if (d === "ortho") return "Orthopedics";
+    if (d === "pediatrics") return "Pediatrics";
+    if (d === "other") return formData.customDepartment || "OTHER";
+    return "";
+  }, [formData.department, formData.customDepartment]);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((d) => ({ ...d, [name]: value }));
@@ -32,23 +190,28 @@ const AppointmentPage = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const payload = {
-      ...formData,
-      department:
-        formData.department === "other" && formData.customDepartment
-          ? formData.customDepartment
-          : formData.department,
-      timeSlot:
-        formData.timeSlot === "custom" && formData.customTimeSlot
-          ? formData.customTimeSlot
-          : formData.timeSlot,
-    };
-
+    const payload = resolvePayload(formData);
     console.log("Appointment request:", payload);
 
-    alert(
-      "Your appointment request has been submitted. We will contact you shortly."
-    );
+    const msg = `Hello Aarogya Hospital,
+
+I want to book an appointment.
+
+PATIENT NAME: ${payload.fullName}
+MOBILE: ${payload.phone}
+EMAIL: ${payload.email || "N/A"}
+
+DEPARTMENT: ${departmentLabel || payload.department || "N/A"}
+DOCTOR PREFERENCE: ${payload.doctorPreference || "N/A"}
+
+PREFERRED DATE: ${payload.date}
+PREFERRED TIME: ${timeSlotLabel || payload.timeSlot || "N/A"}
+
+MESSAGE:
+${payload.message}`;
+
+    setWaMessage(msg);
+    setWaOpen(true);
   };
 
   return (
@@ -81,11 +244,6 @@ const AppointmentPage = () => {
               <h1 className="mt-4 text-2xl font-semibold uppercase tracking-[0.18em] text-slate-900 sm:text-[26px]">
                 Schedule Your Visit at Aarogya Hospital
               </h1>
-              <p className="mt-3 max-w-xl text-[13px] leading-relaxed text-slate-600 sm:text-[14px]">
-                Share your details and preferred date &amp; time. Our team will
-                review your request and confirm your appointment over call or
-                message as per doctor availability.
-              </p>
             </div>
 
             <div className="mt-2 flex items-start gap-3 rounded-2xl border border-red-200 bg-red-50 px-3 py-2.5 sm:max-w-xs">
@@ -339,7 +497,6 @@ const AppointmentPage = () => {
                   className="group relative inline-flex items-center justify-center gap-2 overflow-hidden rounded-full bg-gradient-to-r from-[#F04E30] via-[#F04E30] to-[#d54428] px-5 py-2.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-white shadow-lg shadow-[#F04E30]/40 transition-all duration-300 hover:scale-[1.02] hover:shadow-[#F04E30]/60 focus:outline-none focus:ring-2 focus:ring-[#F04E30]/70 focus:ring-offset-2 focus:ring-offset-slate-50"
                 >
                   <span className="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-r from-white/50 via-transparent to-transparent opacity-0 transition-all duration-500 group-hover:translate-x-10 group-hover:opacity-100" />
-
                   <FiSend className="text-sm transition-transform duration-300 group-hover:-translate-y-[1px] group-hover:translate-x-[1px]" />
                   <span>SUBMIT REQUEST</span>
                 </button>
@@ -348,6 +505,13 @@ const AppointmentPage = () => {
           </div>
         </div>
       </div>
+
+      {/* WhatsApp Modal */}
+      <WhatsAppModal
+        open={waOpen}
+        onClose={() => setWaOpen(false)}
+        message={waMessage}
+      />
     </section>
   );
 };

@@ -706,6 +706,7 @@
 
 // export default HealthCheckPackagesPage;
 // src/Components/Get/Get.jsx
+
 import React, { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -719,56 +720,77 @@ const filters = [
 ];
 
 /* ---------------------------------------------
-  PACKAGES (NAMES IN CAPS)
-  - NO TEST COUNT
-  - DOCTOR NAMES ADDED AS YOU SAID
-  - FULL BODY CHECKUP INCLUDES: DM CARDIO, MEDICINE+ORTHO, PREVENTIVE CARDIO, HYPERTENSION
+  PACKAGES
+  FIXES DONE:
+  1) allPackages array ke andar MEDANTA objects ki braces/commas sahi ki
+  2) plan "premium" hata ke "advance" kiya (kyunki filters me premium nahi hai)
 --------------------------------------------- */
 const allPackages = [
   // BASIC
-  {
-    id: "general-basic",
-    name: "GENERAL BODY CHECKUP",
-    plan: "basic",
-    doctors: ["DR. CHIRAG AGRAWAL"],
-    price: 999,
-    includes: ["GENERAL HEALTH SCREENING", "BASIC BLOOD PROFILE", "VITALS REVIEW"],
-  },
-  {
-    id: "lung-basic",
-    name: "LUNG CHECKUP",
-    plan: "basic",
-    doctors: ["DR. PANKAJ MOTGHARE"],
-    price: 1499,
-    includes: ["RESPIRATORY SCREENING", "BASIC LUNG ASSESSMENT"],
-  },
   {
     id: "bone-basic",
     name: "BONE CHECKUP",
     plan: "basic",
     doctors: ["DR. DEEPAK AGRAWAL"],
-    price: 1299,
+    price: 2499,
     includes: ["BONE & JOINT REVIEW", "POSTURE / PAIN ASSESSMENT"],
   },
 
-  // ADVANCE
+  // ADVANCE (MEDANTA)
   {
-    id: "full-body-advance",
-    name: "FULL BODY CHECKUP",
+    id: "medanta-men-fullbody",
+    name: "FULL BODY CHECKUP – MEN",
     plan: "advance",
-    doctors: ["DR. CHIRAG AGRAWAL", "DR. DEEPAK AGRAWAL"],
-    price: 4999,
-    highlight: "BEST VALUE",
+    doctors: ["DR. PANKAJ , DR. DEEPAK AGRAWAL  & DR. CHIRAG AGRAWAL"],
+    price: 15000,
+    testsIncluded: 36,
+    sampleType: ["BLOOD", "URINE", "STOOL"],
     includes: [
-      "DM CARDIO (INCLUDED)",
-      "MEDICINE + ORTHO (INCLUDED)",
-      "PREVENTIVE CARDIO (INCLUDED)",
-      "HYPERTENSION CHECKUP (INCLUDED)",
+      "COMPLETE BLOOD PROFILE",
+      "DIABETES SCREENING (GLUCOSE + HBA1C)",
+      "LIVER & KIDNEY FUNCTION TEST",
+      "HEART SCREENING (ECG + STRESS ECHO + LIPID PROFILE)",
+      "STROKE RISK ASSESSMENT",
+      "LUNG FUNCTION TEST + CHEST X-RAY",
+      "BODY COMPOSITION + DEXA FAT ANALYSIS",
+      "EYE EXAMINATION WITH FUNDUS PRINT",
+      "THYROID + TESTOSTERONE TEST",
+      "VITAMIN B12 + VITAMIN D",
+      "PSA (PROSTATE CANCER SCREENING)",
+      "ULTRASOUND WHOLE ABDOMEN",
+      "DENTAL OPG + AUDIOLOGY TEST",
     ],
   },
   {
+    id: "medanta-women-fullbody",
+    name: "FULL BODY CHECKUP – WOMEN",
+    plan: "advance",
+    doctors: ["DR. PANKAJ , DR. DEEPAK AGRAWAL , DR. CHIRAG AGRAWAL & DR. PREETI AGRAWAL"],
+    price: 15000,
+    testsIncluded: 36,
+    sampleType: ["BLOOD", "URINE", "STOOL"],
+    includes: [
+      "COMPLETE BLOOD PROFILE",
+      "DIABETES SCREENING (GLUCOSE + HBA1C)",
+      "LIVER & KIDNEY FUNCTION TEST",
+      "HEART SCREENING (ECG + STRESS ECHO + LIPID PROFILE)",
+      "STROKE RISK ASSESSMENT",
+      "LUNG FUNCTION TEST + CHEST X-RAY",
+      "BODY COMPOSITION + DEXA FAT ANALYSIS",
+      "EYE EXAMINATION",
+      "THYROID PROFILE",
+      "VITAMIN B12 + VITAMIN D",
+      "MAMMOGRAPHY (2D BOTH BREAST)",
+      "PAP SMEAR",
+      "ULTRASOUND WHOLE ABDOMEN",
+      "DENTAL OPG + AUDIOLOGY TEST",
+    ],
+  },
+
+  // ADVANCE (OTHER)
+  {
     id: "dm-cardio",
-    name: "DM CARDIO PACKAGE",
+    name: "HEART HEALTH PACKAGE",
     plan: "advance",
     doctors: ["DR. CHIRAG AGRAWAL"],
     price: 3499,
@@ -779,7 +801,7 @@ const allPackages = [
     id: "medicine-ortho",
     name: "MEDICINE + ORTHO CHECKUP",
     plan: "advance",
-    doctors: ["DR. CHIRAG AGRAWAL", "DR. DEEPAK AGRAWAL"],
+    doctors: ["DR. PANKAJ & DR. DEEPAK AGRAWAL"],
     price: 2199,
     note: "INCLUDED IN FULL BODY CHECKUP (ADVANCE)",
     includes: ["PHYSICIAN REVIEW", "ORTHO REVIEW"],
@@ -810,6 +832,36 @@ const allPackages = [
     price: 5599,
     includes: ["FERTILITY CONSULTATION", "BASIC EVALUATION PLAN"],
   },
+  {
+  id: "medanta-years-to-life-women",
+  name: "Years to Life – Women (Senior Care)",
+  plan: "advance",
+  doctors: ["DR. PANKAJ , DR. DEEPAK AGRAWAL , DR. CHIRAG AGRAWAL & DR. PREETI AGRAWAL"],
+  price: 15000,
+  testsIncluded: 31,
+  sampleType: ["BLOOD", "URINE", "STOOL"],
+  includes: [
+    "COMPLETE BLOOD PROFILE + HEMOGRAM",
+    "DIABETES SCREENING (GLUCOSE + HBA1C)",
+    "KIDNEY FUNCTION (RFT + eGFR + MICROALBUMIN)",
+    "INFECTION SCREENING (HIV, HCV, HBsAg)",
+    "LIPID PROFILE + CARDIAC RISK MARKERS",
+    "ECG + STRESS ECHO / TMT",
+    "CT CORONARY ANGIOGRAM (ADVANCED HEART SCAN)",
+    "VITAMIN D3 + VITAMIN B12",
+    "LIVER FUNCTION TEST",
+    "FREE THYROID PROFILE",
+    "PAP SMEAR",
+    "MAMMOGRAPHY (2D BOTH BREAST)",
+    "CHEST X-RAY + PULMONARY FUNCTION TEST",
+    "CAROTID IMT (STROKE RISK ASSESSMENT)",
+    "BODY FAT ANALYSIS",
+    "ULTRASOUND WHOLE ABDOMEN",
+    "DEXA WHOLE BODY (BONE DENSITY)",
+    "MUSCULOSKELETAL ASSESSMENT"
+  ],
+  
+}
 ];
 
 /* ---------------------------------------------
@@ -876,11 +928,13 @@ const BookAndPayModal = ({ pkg, onClose }) => {
   const handlePayDemo = (e) => {
     e.preventDefault();
     alert(
-      `DEMO BOOKING + PAYMENT\n\nPACKAGE: ${pkg.name}\nPLAN: ${pkg.plan.toUpperCase()}\nDOCTOR(S): ${pkg.doctors.join(
-        ", "
-      )}\nAMOUNT: ₹${pkg.price}\n\nPATIENT NAME: ${form.name}\nMOBILE: ${
-        form.mobile
-      }\nDATE: ${form.date || "NOT SELECTED"}`
+      `DEMO BOOKING + PAYMENT\n\nPACKAGE: ${pkg.name}\nPLAN: ${String(
+        pkg.plan
+      ).toUpperCase()}\nDOCTOR(S): ${pkg.doctors.join(", ")}\nAMOUNT: ₹${
+        pkg.price
+      }\n\nPATIENT NAME: ${form.name}\nMOBILE: ${form.mobile}\nDATE: ${
+        form.date || "NOT SELECTED"
+      }`
     );
     onClose();
   };
@@ -890,7 +944,7 @@ const BookAndPayModal = ({ pkg, onClose }) => {
       <div className="w-full max-w-md rounded-2xl bg-white shadow-xl border border-gray-200 p-5">
         <div className="flex items-center justify-between mb-3">
           <h3 className="text-sm font-semibold text-gray-900 uppercase">
-            BOOK & PAY
+            BOOK
           </h3>
           <button
             type="button"
@@ -904,7 +958,9 @@ const BookAndPayModal = ({ pkg, onClose }) => {
         <div className="rounded-lg border border-gray-200 bg-gray-50 p-3 mb-3">
           <div className="flex items-start justify-between gap-2">
             <div>
-              <p className="text-xs text-gray-600 uppercase">SELECTED PACKAGE</p>
+              <p className="text-xs text-gray-600 uppercase">
+                SELECTED PACKAGE
+              </p>
               <p className="text-sm font-semibold text-gray-900 uppercase">
                 {pkg.name}
               </p>
@@ -978,16 +1034,8 @@ const BookAndPayModal = ({ pkg, onClose }) => {
             />
           </div>
 
-          <button
-            type="submit"
-            className="w-full rounded-md bg-orange-500 px-4 py-2 text-xs font-semibold text-white hover:bg-orange-600 transition-colors uppercase"
-          >
-            PAY ₹{pkg.price.toLocaleString("en-IN")} (DEMO)
-          </button>
-
-          <p className="text-[10px] text-gray-500">
-            Demo only. Replace with Razorpay/Stripe later.
-          </p>
+          
+        
         </form>
       </div>
     </div>
@@ -1054,7 +1102,7 @@ const PackageCard = ({ pkg, onBook }) => {
           onClick={() => onBook(pkg)}
           className="px-3 py-2 text-xs font-medium rounded-md bg-orange-500 text-white hover:bg-orange-600 transition uppercase"
         >
-          BOOK & PAY
+          BOOK 
         </button>
       </div>
     </div>
@@ -1107,7 +1155,7 @@ const HealthCheckPackagesPage = () => {
           </p>
         </header>
 
-        {/* SIMPLE FILTER */}
+        {/* FILTER */}
         <section className="mb-6">
           <div className="flex flex-wrap justify-center gap-2">
             {filters.map((f) => (
@@ -1145,7 +1193,10 @@ const HealthCheckPackagesPage = () => {
 
       {/* MODALS */}
       {selectedPkg && (
-        <BookAndPayModal pkg={selectedPkg} onClose={() => setSelectedPkg(null)} />
+        <BookAndPayModal
+          pkg={selectedPkg}
+          onClose={() => setSelectedPkg(null)}
+        />
       )}
 
       <CallRequestModal open={callOpen} onClose={() => setCallOpen(false)} />

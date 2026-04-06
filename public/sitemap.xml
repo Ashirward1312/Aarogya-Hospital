@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset
+  xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
+  http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+
+  <!-- HOME -->
+  <url>
+    <loc>https://aarogyahospitalraipur.com/</loc>
+    <changefreq>daily</changefreq>
+    <priority>1.00</priority>
+  </url>
+
+ <!-- Doctors -->
+<url>
+  <loc>https://aarogyahospitalraipur.com/doctors</loc>
+  <changefreq>weekly</changefreq>
+  <priority>0.90</priority>
+</url>
+
+  <!-- Services -->
+  <url>
+    <loc>https://aarogyahospitalraipur.com/services</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.90</priority>
+  </url>
+
+  <!-- Appointment -->
+  <url>
+    <loc>https://aarogyahospitalraipur.com/appointment</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.95</priority>
+  </url>
+
+  <!-- Contact -->
+  <url>
+    <loc>https://aarogyahospitalraipur.com/contact</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.80</priority>
+  </url>
+
+  <!-- Health Check Packages -->
+  <url>
+    <loc>https://aarogyahospitalraipur.com/health-check-packages</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+
+  <!-- Second Opinion -->
+  <url>
+    <loc>https://aarogyahospitalraipur.com/second-opinion</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+
+  <!-- Virtual Consultation -->
+  <url>
+    <loc>https://aarogyahospitalraipur.com/virtual-consultation</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+
+  <!-- Book a Test -->
+  <url>
+    <loc>https://aarogyahospitalraipur.com/book-test</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+
+  <!-- Homecare Services -->
+  <url>
+    <loc>https://aarogyahospitalraipur.com/homecare-services</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+
+  <!-- Radiology -->
+  <url>
+    <loc>https://aarogyahospitalraipur.com/radiology</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.80</priority>
+  </url>
+
+</urlset>

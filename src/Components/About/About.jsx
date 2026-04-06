@@ -1,6 +1,7 @@
-import React from "react";
+// src/components/AboutSection.jsx
+import React, { useEffect } from "react";
 import logo from "../images/logo1.jpg";
-import hospitalImg from "../images/a.PNG";
+import hospitalImg from "../images/a.webp";
 
 const AboutSection = () => {
   return (

@@ -1,16 +1,30 @@
 // src/pages/HeartAndOTModern.jsx
 import React, { useState } from "react";
-import h from "../images/h1.png"; // heart / cardiac image
-import op from "../images/op.jpg"; // OT / operation image
+import { useNavigate } from "react-router-dom";
+import h from "../images/h1.webp"; // heart / cardiac image
+import op from "../images/op_.webp"; // OT / operation image
 
 const HeartAndOTModern = () => {
   const [opLoaded, setOpLoaded] = useState(false);
   const [opError, setOpError] = useState(false);
+  const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-100 via-slate-50 to-slate-100 px-4 py-10 md:px-10 lg:px-20">
+    <div id="heart" className="min-h-screen bg-gradient-to-br from-slate-100 via-slate-50 to-slate-100 px-4 py-10 md:px-10 lg:px-20">
+      {/* BACK BUTTON */}
+      <div className="mx-auto max-w-6xl w-full mb-6">
+        <button
+          onClick={() => navigate(-1)}
+          className="inline-flex items-center justify-center gap-2 bg-white/90 backdrop-blur-md border border-slate-200 text-slate-800 px-4 py-2.5 rounded-full shadow-md hover:-translate-y-1 hover:shadow-lg hover:bg-slate-50 transition-all duration-300 font-bold text-sm"
+        >
+          <svg className="w-4 h-4 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+          </svg>
+          Back
+        </button>
+      </div>
       {/* PAGE HEADER */}
-      <header className="mx-auto mb-10 max-w-6xl text-center">
+      <header className="mx-auto mb-10 max-w-6xl text-center relative">
         <p className="text-xs font-semibold tracking-[0.32em] text-slate-500">
           ADVANCED HEART & SURGICAL SCIENCES
         </p>

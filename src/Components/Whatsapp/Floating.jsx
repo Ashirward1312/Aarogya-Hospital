@@ -1,50 +1,54 @@
 import React from "react";
-import { FaFacebookF, FaInstagram, FaTwitter } from "react-icons/fa";
+import { FaWhatsapp, FaInstagram, FaFacebookF } from "react-icons/fa";
 
-const FloatingSocials = () => {
-  const socials = [
-    {
-      icon: <FaFacebookF />,
-    //   link:
-        // "https://www.facebook.com/people/Headquarter-HQ-In-Association-with-Kursi/61582888842094/",
-      bg: "bg-blue-500",
-      hover: "hover:bg-blue-600",
-      label: "Facebook",
-    },
-    {
-      icon: <FaTwitter />,
-    //   link: "https://x.com/maheshwari95189",
-      bg: "bg-sky-400",
-      hover: "hover:bg-sky-500",
-      label: "Twitter / X",
-    },
-    {
-      icon: <FaInstagram />,
-    //   link: "https://www.instagram.com/headquarterkursi/",
-      bg: "bg-pink-400",
-      hover: "hover:bg-pink-500",
-      label: "Instagram",
-    },
-   
-  ];
+export default function SocialFloatingIcons() {
+  // Single WhatsApp number (wa.me format)
+  const WHATSAPP_NUMBER = "919827198000"; // +91 98271 98000
+
+  // Social links
+  const INSTAGRAM_URL = "https://www.instagram.com/aarogyaraipur/?hl=en";
+  const FACEBOOK_URL =
+    "https://www.facebook.com/AarogyaHospitalRaipurCG/mentions/";
+
+  const message = "Hello Aarogya Hospital, I need assistance.";
+  const whatsappURL = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
 
   return (
-    <div className="fixed top-1/3 right-0 z-50 flex flex-col space-y-3">
-      {socials.map((s, index) => (
-        <a
-          key={index}
-          href={s.link}
-          target="_blank"
-          rel="noreferrer"
-          aria-label={s.label}
-          title={s.label}
-          className={`flex items-center justify-center w-12 h-12 ${s.bg} text-white rounded-l-full shadow-lg transition transform hover:scale-110 ${s.hover}`}
-        >
-          {s.icon}
-        </a>
-      ))}
+    <div className="fixed left-4 bottom-6 z-50 flex flex-col gap-3">
+      
+      {/* WhatsApp */}
+      <a
+        href={whatsappURL}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="bg-green-500 hover:bg-green-600 p-3 rounded-full shadow-md transition-transform hover:scale-110"
+        aria-label="Chat on WhatsApp"
+      >
+        <FaWhatsapp className="text-white w-5 h-5" />
+      </a>
+
+      {/* Instagram */}
+      <a
+        href={INSTAGRAM_URL}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600 p-3 rounded-full shadow-md transition-transform hover:scale-110"
+        aria-label="Visit Instagram"
+      >
+        <FaInstagram className="text-white w-5 h-5" />
+      </a>
+
+      {/* Facebook */}
+      <a
+        href={FACEBOOK_URL}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="bg-blue-600 hover:bg-blue-700 p-3 rounded-full shadow-md transition-transform hover:scale-110"
+        aria-label="Visit Facebook"
+      >
+        <FaFacebookF className="text-white w-5 h-5" />
+      </a>
+
     </div>
   );
-};
-
-export default FloatingSocials;
+}

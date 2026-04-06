@@ -1,14 +1,154 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { FiPhoneCall, FiMapPin, FiClock, FiSend } from "react-icons/fi";
 
+/* -----------------------------
+WHATSAPP CONFIG
+(wa.me me + nahi aata)
+----------------------------- */
+const WHATSAPP_1 = "919827198000"; // +91 98271 98000
+const WHATSAPP_2 = "918120012121"; // +91 81200 12121
+
+/* -----------------------------
+WHATSAPP MODAL (2 NUMBERS)
+----------------------------- */
+const WhatsAppModal = ({ open, onClose, message }) => {
+  if (!open) return null;
+
+  const openWhatsApp = (number) => {
+    const url = `https://wa.me/${number}?text=${encodeURIComponent(message)}`;
+    window.open(url, "_blank", "noopener,noreferrer");
+  };
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 px-4">
+      <div className="w-full max-w-md rounded-2xl bg-white shadow-xl border border-slate-200 p-5">
+        <div className="flex items-center justify-between mb-3">
+          <h3 className="text-sm font-semibold text-slate-900 uppercase">
+            SEND ON WHATSAPP
+          </h3>
+          <button
+            type="button"
+            onClick={onClose}
+            className="h-7 w-7 flex items-center justify-center rounded-full border border-slate-200 text-xs text-slate-500 hover:bg-slate-50"
+          >
+            ×
+          </button>
+        </div>
+
+        <div className="rounded-lg border border-slate-200 bg-slate-50 p-3 mb-4">
+          <p className="text-[11px] font-semibold text-slate-500 uppercase mb-1">
+            Preview
+          </p>
+          <pre className="whitespace-pre-wrap text-[11px] text-slate-700 leading-relaxed">
+            {message}
+          </pre>
+        </div>
+
+        <div className="grid grid-cols-1 gap-2">
+          <button
+            type="button"
+            onClick={() => openWhatsApp(WHATSAPP_1)}
+            className="w-full rounded-md bg-green-600 px-4 py-2 text-xs font-semibold text-white hover:bg-green-700 transition uppercase"
+          >
+            WhatsApp 98271 98000
+          </button>
+
+          <button
+            type="button"
+            onClick={() => openWhatsApp(WHATSAPP_2)}
+            className="w-full rounded-md border border-green-200 bg-white px-4 py-2 text-xs font-semibold text-green-700 hover:bg-green-50 transition uppercase"
+          >
+            WhatsApp 81200 12121
+          </button>
+
+          <button
+            type="button"
+            onClick={onClose}
+            className="w-full rounded-md border border-slate-200 bg-white px-4 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50 transition uppercase"
+          >
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const ContactSection = () => {
+  //  Meta Title + Meta Description + Canonical + OG (added)
+  React.useEffect(() => {
+    const pageTitle = "Book Consultation | Aarogya Hospital Shankar Nagar Raipur";
+
+    const descriptionContent =
+      "Contact Aarogya Hospital in Raipur for appointments, medical consultation, and emergency healthcare services. Call now or visit our hospital.";
+
+    const canonicalUrl = "https://www.aarogyahospitalraipur.com/contact";
+
+    document.title = pageTitle;
+
+    let meta = document.querySelector('meta[name="description"]');
+    if (!meta) {
+      meta = document.createElement("meta");
+      meta.setAttribute("name", "description");
+      document.head.appendChild(meta);
+    }
+    meta.setAttribute("content", descriptionContent);
+
+    //  Canonical Tag (CONTACT)
+    let canonical = document.querySelector('link[rel="canonical"]');
+    if (!canonical) {
+      canonical = document.createElement("link");
+      canonical.setAttribute("rel", "canonical");
+      document.head.appendChild(canonical);
+    }
+    canonical.setAttribute("href", canonicalUrl);
+
+    //  Open Graph (OG)
+    const setOg = (property, content) => {
+      let tag = document.querySelector(`meta[property="${property}"]`);
+      if (!tag) {
+        tag = document.createElement("meta");
+        tag.setAttribute("property", property);
+        document.head.appendChild(tag);
+      }
+      tag.setAttribute("content", content);
+    };
+
+    setOg("og:type", "website");
+    setOg("og:url", "https://www.aarogyahospitalraipur.com/contact");
+    setOg("og:title", "Book Consultation | Aarogya Hospital Shankar Nagar Raipur");
+    setOg("og:description", "Contact Aarogya Hospital in Raipur for appointments, medical consultation, and emergency healthcare services. Call now or visit our hospital.");
+    setOg(
+      "og:image",
+      "https://www.aarogyahospitalraipur.com/assets/logo1-BEkNzzrJ.jpg"
+    );
+    setOg("og:site_name", "Aarogya Hospital Raipur");
+  }, []);
+
   const [formData, setFormData] = useState({
     fullName: "",
     phone: "",
     email: "",
     message: "",
   });
+
   const [submitted, setSubmitted] = useState(false);
+
+  // WhatsApp modal states
+  const [waOpen, setWaOpen] = useState(false);
+
+  const waMessage = useMemo(() => {
+    return `Hello Aarogya Hospital,
+
+I want to contact you.
+
+NAME: ${formData.fullName}
+MOBILE: ${formData.phone}
+EMAIL: ${formData.email || "N/A"}
+
+MESSAGE:
+${formData.message}`;
+  }, [formData]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -17,12 +157,10 @@ const ContactSection = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
     setSubmitted(true);
+    setWaOpen(true);
 
-    // TODO: yahan API / webform integration add karo
-    // console.log("Contact form submitted:", formData);
-
-    // 2–3 second ke baad success message hata sakte ho
     setTimeout(() => setSubmitted(false), 3000);
   };
 
@@ -67,10 +205,6 @@ const ContactSection = () => {
                 </span>
               )}
             </div>
-            <p className="text-xs text-slate-500 mb-4">
-              Share your details and our team will get back to you within
-              working hours.
-            </p>
 
             <form onSubmit={handleSubmit} className="space-y-4">
               {/* Full Name */}
@@ -161,9 +295,7 @@ const ContactSection = () => {
                 <span className="flex h-9 w-9 items-center justify-center rounded-full bg-[#F04E30]/10 text-[#F04E30]">
                   <FiPhoneCall className="text-base" />
                 </span>
-                <span>
-                  HOSPITAL CONTACT DETAILS
-                </span>
+                <span>HOSPITAL CONTACT DETAILS</span>
               </h3>
 
               <div className="space-y-4 text-sm">
@@ -176,6 +308,7 @@ const ContactSection = () => {
                     <p className="text-[11px] font-semibold text-slate-500 uppercase tracking-[0.14em] mb-1">
                       Contact Numbers
                     </p>
+
                     <p className="font-semibold text-slate-900">
                       <a
                         href="tel:+917714044115"
@@ -191,13 +324,43 @@ const ContactSection = () => {
                         0771 4265115
                       </a>
                     </p>
-                    <p className="mt-1 text-sm">
+
+                    <p className="mt-2 text-sm">
                       <span className="text-slate-600">Mobile: </span>
                       <a
                         href="tel:+919827198000"
                         className="font-semibold text-[#F04E30] hover:underline"
                       >
                         +91 98271 98000
+                      </a>
+                      <span className="text-slate-400"> , </span>
+                      <a
+                        href="tel:+918120012121"
+                        className="font-semibold text-[#F04E30] hover:underline"
+                      >
+                        +91 81200 12121
+                      </a>
+                    </p>
+
+                    {/* WhatsApp quick links */}
+                    <p className="mt-2 text-[12px]">
+                      <span className="text-slate-600">WhatsApp: </span>
+                      <a
+                        href={`https://wa.me/${WHATSAPP_1}`}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="font-semibold text-emerald-700 hover:underline"
+                      >
+                        98271 98000
+                      </a>
+                      <span className="text-slate-400"> , </span>
+                      <a
+                        href={`https://wa.me/${WHATSAPP_2}`}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="font-semibold text-emerald-700 hover:underline"
+                      >
+                        81200 12121
                       </a>
                     </p>
                   </div>
@@ -268,6 +431,13 @@ const ContactSection = () => {
           above or visit the hospital emergency directly.
         </p>
       </div>
+
+      {/* WhatsApp Modal */}
+      <WhatsAppModal
+        open={waOpen}
+        onClose={() => setWaOpen(false)}
+        message={waMessage}
+      />
     </section>
   );
 };

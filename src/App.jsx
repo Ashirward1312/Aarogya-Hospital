@@ -24,19 +24,24 @@ import Online from "./Components/Get/Online.jsx";
 import Booktest from "./Components/Get/Booktest.jsx";
 import Homecare from "./Components/Get/Homecare.jsx";
 import Radiology from "./Components/Get/Radiology.jsx";
+import AboutCardiologyPage from "./Components/Quick/Heart.jsx";
+import AboutSurgeryPage from "./Components/Quick/Surgen.jsx";
+import Gynaecology from "./Components/Quick/Gyna.jsx";
+import Orthopedics from "./Components/Quick/Ortho.jsx";
 
-/* -------- ScrollToTop: har route change pe top pe le jao -------- */
+/* -------- ScrollToTop -------- */
 
 const ScrollToTop = ({ children }) => {
   const { pathname } = useLocation();
 
   useEffect(() => {
-    // yaha smooth chahiye to behavior: "smooth" kar sakte ho
     window.scrollTo({ top: 0, left: 0, behavior: "auto" });
   }, [pathname]);
 
   return children;
 };
+
+/* -------- Home Page Layout -------- */
 
 const HomePage = () => {
   return (
@@ -56,30 +61,33 @@ const HomePage = () => {
   );
 };
 
+/* -------- Main App -------- */
+
 function App() {
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100">
+    // ✅ overflow-x-hidden added here
+    <div className="min-h-screen bg-slate-950 text-slate-100 overflow-x-hidden">
+
       <Header />
 
-      {/* ScrollToTop wrapper */}
       <ScrollToTop>
         <Routes>
+
           {/* Home */}
           <Route path="/" element={<HomePage />} />
-
-          {/* Departments / Doctors */}
-          <Route path="/departments" element={<DepartmentsSection />} />
+          {/* Doctors */}
+          <Route path="/doctors" element={<DepartmentsSection />} />
 
           {/* Services */}
           <Route path="/services" element={<Services />} />
 
-          {/* Appointment page */}
+          {/* Appointment */}
           <Route path="/appointment" element={<AppointmentPage />} />
 
           {/* Contact */}
           <Route path="/contact" element={<Contact />} />
 
-          {/* Health Check Packages */}
+          {/* Health Check */}
           <Route path="/health-check-packages" element={<Get />} />
 
           {/* Second Opinion */}
@@ -88,14 +96,20 @@ function App() {
           {/* Virtual Consultation */}
           <Route path="/virtual-consultation" element={<Online />} />
 
-          {/* Book a Test */}
+          {/* Book Test */}
           <Route path="/book-test" element={<Booktest />} />
 
-          {/* Homecare Services */}
+          {/* Homecare */}
           <Route path="/homecare-services" element={<Homecare />} />
 
-          {/* Radiology Services */}
+          {/* Radiology */}
           <Route path="/radiology" element={<Radiology />} />
+
+          {/* Heart Department */}
+          <Route path="/services/cardiologist" element={<AboutCardiologyPage />} />
+          <Route path="/services/general-surgery" element={<AboutSurgeryPage />} />
+          <Route path="/services/gynaecology" element={<Gynaecology />} />
+          <Route path="/services/orthopedics" element={<Orthopedics />} />
         </Routes>
       </ScrollToTop>
 

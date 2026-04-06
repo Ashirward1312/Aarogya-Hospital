@@ -25,6 +25,14 @@ const scanTypes = [
   { id: "all", label: "ALL SCANS & IMAGING", detail: "Other radiology services" },
 ];
 
+/* ✅ NUMBERS */
+const PHONE_1_TEL = "+918120012121"; // 81200 12121
+const PHONE_2_TEL = "+919827198000"; // 98271 98000
+
+// ✅ WhatsApp (wa.me format without +)
+const WHATSAPP_1 = "919827198000"; // +91 98271 98000
+const WHATSAPP_2 = "918120012121"; // +91 81200 12121
+
 /* ---------------------------------------------
   CALL MODAL
 --------------------------------------------- */
@@ -54,13 +62,13 @@ const CallModal = ({ open, onClose }) => {
 
         <div className="grid gap-2">
           <a
-            href="tel:812001212"
+            href={`tel:${PHONE_1_TEL}`}
             className="w-full text-center rounded-md bg-orange-500 px-4 py-2 text-xs font-semibold text-white hover:bg-orange-600 transition uppercase"
           >
             CALL 812001212
           </a>
           <a
-            href="tel:9827198000"
+            href={`tel:${PHONE_2_TEL}`}
             className="w-full text-center rounded-md border border-orange-300 bg-white px-4 py-2 text-xs font-semibold text-orange-600 hover:bg-orange-50 transition uppercase"
           >
             CALL 9827198000
@@ -75,13 +83,123 @@ const CallModal = ({ open, onClose }) => {
   );
 };
 
+/* ---------------------------------------------
+  WHATSAPP MODAL (SEND)
+--------------------------------------------- */
+const WhatsAppModal = ({ open, onClose, message }) => {
+  if (!open) return null;
+
+  const openWhatsApp = (number) => {
+    const url = `https://wa.me/${number}?text=${encodeURIComponent(message)}`;
+    window.open(url, "_blank", "noopener,noreferrer");
+  };
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 px-4">
+      <div className="w-full max-w-md rounded-2xl bg-white shadow-xl border border-gray-200 p-5">
+        <div className="flex items-center justify-between mb-3">
+          <h3 className="text-sm font-semibold text-gray-900 uppercase">
+            SEND ON WHATSAPP
+          </h3>
+          <button
+            type="button"
+            onClick={onClose}
+            className="h-7 w-7 flex items-center justify-center rounded-full border border-gray-200 text-xs text-gray-500 hover:bg-gray-50"
+          >
+            ×
+          </button>
+        </div>
+
+        <p className="text-xs text-gray-600 mb-3">
+          Choose a WhatsApp number to send your request.
+        </p>
+
+        <div className="grid gap-2">
+          <button
+            type="button"
+            onClick={() => openWhatsApp(WHATSAPP_1)}
+            className="w-full text-center rounded-md bg-green-600 px-4 py-2 text-xs font-semibold text-white hover:bg-green-700 transition uppercase"
+          >
+            WHATSAPP 98271 98000
+          </button>
+
+          <button
+            type="button"
+            onClick={() => openWhatsApp(WHATSAPP_2)}
+            className="w-full text-center rounded-md border border-green-200 bg-white px-4 py-2 text-xs font-semibold text-green-700 hover:bg-green-50 transition uppercase"
+          >
+            WHATSAPP 81200 12121
+          </button>
+        </div>
+
+        <button
+          type="button"
+          onClick={onClose}
+          className="mt-3 w-full text-center rounded-md border border-gray-200 bg-white px-4 py-2 text-xs font-semibold text-gray-700 hover:bg-gray-50 transition uppercase"
+        >
+          CLOSE
+        </button>
+      </div>
+    </div>
+  );
+};
+
 const RadiologyServicesPage = () => {
   const navigate = useNavigate();
   const [callOpen, setCallOpen] = useState(false);
 
+  // ✅ WhatsApp modal state
+  const [waOpen, setWaOpen] = useState(false);
+  const [waMessage, setWaMessage] = useState("");
+
+  // ✅ Form state (no design/content change, only value/onChange + visibility fix)
+  const [patientName, setPatientName] = useState("");
+  const [age, setAge] = useState("");
+  const [mobile, setMobile] = useState("");
+  const [cityArea, setCityArea] = useState("");
+
+  const [scanType, setScanType] = useState("");
+  const [scanNames, setScanNames] = useState("");
+
+  const [preferredDate, setPreferredDate] = useState("");
+  const [timeSlot, setTimeSlot] = useState("");
+
+  const [hasPrescription, setHasPrescription] = useState("Yes");
+  const [pregnancyStatus, setPregnancyStatus] = useState("No");
+
+  const [additionalInfo, setAdditionalInfo] = useState("");
+  const [consent, setConsent] = useState(false);
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    alert("Your radiology / scan booking request has been submitted.");
+
+    const scanTypeLabel =
+      scanTypes.find((s) => s.id === scanType)?.label || "N/A";
+
+    const message = `Hello Aarogya Hospital,
+
+I want to book a scan / imaging.
+
+Patient Name: ${patientName}
+Age: ${age || "N/A"}
+Mobile Number: ${mobile}
+City / Area: ${cityArea || "N/A"}
+
+Scan Type: ${scanTypeLabel}
+Exact scan name(s) as per prescription: ${scanNames?.trim() ? scanNames.trim() : "N/A"}
+
+Preferred Date: ${preferredDate || "N/A"}
+Preferred Time Slot: ${timeSlot || "N/A"}
+
+Do you have a doctor's prescription?: ${hasPrescription || "N/A"}
+Is patient pregnant / possibly pregnant?: ${pregnancyStatus || "N/A"}
+
+Any additional information: ${additionalInfo?.trim() ? additionalInfo.trim() : "N/A"}
+
+Please confirm slot, preparation instructions and pricing.`;
+
+    setWaMessage(message);
+    setWaOpen(true);
   };
 
   return (
@@ -134,13 +252,13 @@ const RadiologyServicesPage = () => {
           {/* QUICK CALL CHIPS */}
           <div className="mt-4 flex flex-wrap justify-center gap-2">
             <a
-              href="tel:812001212"
+              href={`tel:${PHONE_1_TEL}`}
               className="text-[11px] px-3 py-1 rounded-full bg-white border border-gray-200 text-gray-700 hover:bg-gray-50"
             >
               CALL: 812001212
             </a>
             <a
-              href="tel:9827198000"
+              href={`tel:${PHONE_2_TEL}`}
               className="text-[11px] px-3 py-1 rounded-full bg-white border border-gray-200 text-gray-700 hover:bg-gray-50"
             >
               CALL: 9827198000
@@ -244,7 +362,9 @@ const RadiologyServicesPage = () => {
                   <input
                     type="text"
                     required
-                    className="w-full rounded-md border border-gray-300 px-2 py-1.5 text-xs focus:outline-none focus:ring-1 focus:ring-orange-400 focus:border-orange-400"
+                    value={patientName}
+                    onChange={(e) => setPatientName(e.target.value)}
+                    className="w-full rounded-md border border-gray-300 px-2 py-1.5 text-xs bg-white text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-orange-400 focus:border-orange-400"
                   />
                 </div>
                 <div>
@@ -254,7 +374,9 @@ const RadiologyServicesPage = () => {
                   <input
                     type="number"
                     min="0"
-                    className="w-full rounded-md border border-gray-300 px-2 py-1.5 text-xs focus:outline-none focus:ring-1 focus:ring-orange-400 focus:border-orange-400"
+                    value={age}
+                    onChange={(e) => setAge(e.target.value)}
+                    className="w-full rounded-md border border-gray-300 px-2 py-1.5 text-xs bg-white text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-orange-400 focus:border-orange-400"
                   />
                 </div>
               </div>
@@ -267,7 +389,9 @@ const RadiologyServicesPage = () => {
                   <input
                     type="tel"
                     required
-                    className="w-full rounded-md border border-gray-300 px-2 py-1.5 text-xs focus:outline-none focus:ring-1 focus:ring-orange-400 focus:border-orange-400"
+                    value={mobile}
+                    onChange={(e) => setMobile(e.target.value)}
+                    className="w-full rounded-md border border-gray-300 px-2 py-1.5 text-xs bg-white text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-orange-400 focus:border-orange-400"
                   />
                 </div>
                 <div>
@@ -276,7 +400,9 @@ const RadiologyServicesPage = () => {
                   </label>
                   <input
                     type="text"
-                    className="w-full rounded-md border border-gray-300 px-2 py-1.5 text-xs focus:outline-none focus:ring-1 focus:ring-orange-400 focus:border-orange-400"
+                    value={cityArea}
+                    onChange={(e) => setCityArea(e.target.value)}
+                    className="w-full rounded-md border border-gray-300 px-2 py-1.5 text-xs bg-white text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-orange-400 focus:border-orange-400"
                   />
                 </div>
               </div>
@@ -296,7 +422,10 @@ const RadiologyServicesPage = () => {
                         type="radio"
                         name="scanType"
                         value={scan.id}
+                        checked={scanType === scan.id}
+                        onChange={(e) => setScanType(e.target.value)}
                         className="mt-0.5 h-3.5 w-3.5"
+                        required
                       />
                       <div>
                         <p className="font-semibold text-gray-900 text-[11px]">
@@ -317,7 +446,9 @@ const RadiologyServicesPage = () => {
                 <textarea
                   rows={3}
                   required
-                  className="w-full rounded-md border border-gray-300 px-2 py-1.5 text-xs focus:outline-none focus:ring-1 focus:ring-orange-400 focus:border-orange-400"
+                  value={scanNames}
+                  onChange={(e) => setScanNames(e.target.value)}
+                  className="w-full rounded-md border border-gray-300 px-2 py-1.5 text-xs bg-white text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-orange-400 focus:border-orange-400"
                   placeholder="Example: CT Brain Plain, MRI Lumbar Spine with contrast, Ultrasound Whole Abdomen, X-Ray Chest PA View, etc."
                 />
                 <p className="mt-1 text-[10px] text-gray-500">
@@ -334,14 +465,20 @@ const RadiologyServicesPage = () => {
                   </label>
                   <input
                     type="date"
-                    className="w-full rounded-md border border-gray-300 px-2 py-1.5 text-xs text-gray-800 focus:outline-none focus:ring-1 focus:ring-orange-400 focus:border-orange-400"
+                    value={preferredDate}
+                    onChange={(e) => setPreferredDate(e.target.value)}
+                    className="w-full rounded-md border border-gray-300 px-2 py-1.5 text-xs bg-white text-gray-800 focus:outline-none focus:ring-1 focus:ring-orange-400 focus:border-orange-400"
                   />
                 </div>
                 <div>
                   <label className="block text-[11px] text-gray-600 mb-1">
                     Preferred Time Slot
                   </label>
-                  <select className="w-full rounded-md border border-gray-300 px-2 py-1.5 text-xs text-gray-800 focus:outline-none focus:ring-1 focus:ring-orange-400 focus:border-orange-400">
+                  <select
+                    value={timeSlot}
+                    onChange={(e) => setTimeSlot(e.target.value)}
+                    className="w-full rounded-md border border-gray-300 px-2 py-1.5 text-xs bg-white text-gray-800 focus:outline-none focus:ring-1 focus:ring-orange-400 focus:border-orange-400"
+                  >
                     <option value="">Select time slot</option>
                     <option>08:00 AM – 10:00 AM</option>
                     <option>10:00 AM – 12:00 PM</option>
@@ -358,7 +495,11 @@ const RadiologyServicesPage = () => {
                   <label className="block text-[11px] text-gray-600 mb-1">
                     Do you have a doctor&apos;s prescription?
                   </label>
-                  <select className="w-full rounded-md border border-gray-300 px-2 py-1.5 text-xs text-gray-800 focus:outline-none focus:ring-1 focus:ring-orange-400 focus:border-orange-400">
+                  <select
+                    value={hasPrescription}
+                    onChange={(e) => setHasPrescription(e.target.value)}
+                    className="w-full rounded-md border border-gray-300 px-2 py-1.5 text-xs bg-white text-gray-800 focus:outline-none focus:ring-1 focus:ring-orange-400 focus:border-orange-400"
+                  >
                     <option>Yes</option>
                     <option>No, need guidance</option>
                   </select>
@@ -367,7 +508,11 @@ const RadiologyServicesPage = () => {
                   <label className="block text-[11px] text-gray-600 mb-1">
                     Is patient pregnant / possibly pregnant?
                   </label>
-                  <select className="w-full rounded-md border border-gray-300 px-2 py-1.5 text-xs text-gray-800 focus:outline-none focus:ring-1 focus:ring-orange-400 focus:border-orange-400">
+                  <select
+                    value={pregnancyStatus}
+                    onChange={(e) => setPregnancyStatus(e.target.value)}
+                    className="w-full rounded-md border border-gray-300 px-2 py-1.5 text-xs bg-white text-gray-800 focus:outline-none focus:ring-1 focus:ring-orange-400 focus:border-orange-400"
+                  >
                     <option>No</option>
                     <option>Yes</option>
                     <option>Not sure</option>
@@ -382,14 +527,22 @@ const RadiologyServicesPage = () => {
                 </label>
                 <textarea
                   rows={2}
-                  className="w-full rounded-md border border-gray-300 px-2 py-1.5 text-xs focus:outline-none focus:ring-1 focus:ring-orange-400 focus:border-orange-400"
+                  value={additionalInfo}
+                  onChange={(e) => setAdditionalInfo(e.target.value)}
+                  className="w-full rounded-md border border-gray-300 px-2 py-1.5 text-xs bg-white text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-orange-400 focus:border-orange-400"
                   placeholder="Diabetes, kidney issues, previous contrast reaction, difficulty lying down, etc."
                 />
               </div>
 
               {/* Consent */}
               <div className="flex items-start gap-2">
-                <input type="checkbox" className="mt-0.5" required />
+                <input
+                  type="checkbox"
+                  className="mt-0.5"
+                  required
+                  checked={consent}
+                  onChange={(e) => setConsent(e.target.checked)}
+                />
                 <p className="text-[10px] text-gray-600">
                   I agree to receive calls / messages from Aarogya Hospital
                   regarding my scan booking, preparation instructions, pricing
@@ -414,8 +567,13 @@ const RadiologyServicesPage = () => {
         </p>
       </div>
 
-      {/* CALL MODAL */}
+      {/* MODALS */}
       <CallModal open={callOpen} onClose={() => setCallOpen(false)} />
+      <WhatsAppModal
+        open={waOpen}
+        onClose={() => setWaOpen(false)}
+        message={waMessage}
+      />
     </main>
   );
 };

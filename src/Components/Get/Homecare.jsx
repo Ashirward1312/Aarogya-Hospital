@@ -1,6 +1,13 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+/* ✅ NUMBERS (working) */
+const PHONE_1_TEL = "+918120012121"; // 81200 12121
+const PHONE_2_TEL = "+919827198000"; // 98271 98000
+
+const WHATSAPP_1 = "919827198000"; // +91 98271 98000
+const WHATSAPP_2 = "918120012121"; // +91 81200 12121
+
 /* ---------------------------------------------
   CALL MODAL
 --------------------------------------------- */
@@ -30,17 +37,17 @@ const CallModal = ({ open, onClose }) => {
 
         <div className="grid gap-2">
           <a
-            href="tel:812001212"
+            href={`tel:${PHONE_1_TEL}`}
             className="w-full text-center rounded-md bg-orange-500 px-4 py-2 text-xs font-semibold text-white hover:bg-orange-600 transition uppercase"
           >
-            CALL 812001212
+            CALL 81200 12121
           </a>
 
           <a
-            href="tel:9827198000"
+            href={`tel:${PHONE_2_TEL}`}
             className="w-full text-center rounded-md border border-orange-300 bg-white px-4 py-2 text-xs font-semibold text-orange-600 hover:bg-orange-50 transition uppercase"
           >
-            CALL 9827198000
+            CALL 98271 98000
           </a>
         </div>
 
@@ -52,13 +59,127 @@ const CallModal = ({ open, onClose }) => {
   );
 };
 
+/* ---------------------------------------------
+  WHATSAPP MODAL (SEND)
+--------------------------------------------- */
+const WhatsAppModal = ({ open, onClose, message }) => {
+  if (!open) return null;
+
+  const openWhatsApp = (number) => {
+    const url = `https://wa.me/${number}?text=${encodeURIComponent(message)}`;
+    window.open(url, "_blank", "noopener,noreferrer");
+  };
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 px-4">
+      <div className="w-full max-w-md rounded-2xl bg-white shadow-xl border border-gray-200 p-5">
+        <div className="flex items-center justify-between mb-3">
+          <h3 className="text-sm font-semibold text-gray-900 uppercase">
+            SEND ON WHATSAPP
+          </h3>
+          <button
+            type="button"
+            onClick={onClose}
+            className="h-7 w-7 flex items-center justify-center rounded-full border border-gray-200 text-xs text-gray-500 hover:bg-gray-50"
+          >
+            ×
+          </button>
+        </div>
+
+        <p className="text-xs text-gray-600 mb-3">
+          Choose a WhatsApp number to send your request.
+        </p>
+
+        <div className="grid gap-2">
+          <button
+            type="button"
+            onClick={() => openWhatsApp(WHATSAPP_1)}
+            className="w-full text-center rounded-md bg-green-600 px-4 py-2 text-xs font-semibold text-white hover:bg-green-700 transition uppercase"
+          >
+            WHATSAPP 98271 98000
+          </button>
+
+          <button
+            type="button"
+            onClick={() => openWhatsApp(WHATSAPP_2)}
+            className="w-full text-center rounded-md border border-green-200 bg-white px-4 py-2 text-xs font-semibold text-green-700 hover:bg-green-50 transition uppercase"
+          >
+            WHATSAPP 81200 12121
+          </button>
+        </div>
+
+        <button
+          type="button"
+          onClick={onClose}
+          className="mt-3 w-full text-center rounded-md border border-gray-200 bg-white px-4 py-2 text-xs font-semibold text-gray-700 hover:bg-gray-50 transition uppercase"
+        >
+          CLOSE
+        </button>
+      </div>
+    </div>
+  );
+};
+
 const HomecareServicesPage = () => {
   const navigate = useNavigate();
   const [callOpen, setCallOpen] = useState(false);
 
+  // ✅ Form state (design/content same, just controlled inputs + visibility fix)
+  const [patientName, setPatientName] = useState("");
+  const [age, setAge] = useState("");
+  const [mobile, setMobile] = useState("");
+  const [cityArea, setCityArea] = useState("");
+  const [address, setAddress] = useState("");
+
+  const [serviceType, setServiceType] = useState("");
+  const [supportNeededFor, setSupportNeededFor] = useState(
+    "24 x 7 (Round the clock)"
+  );
+  const [startDate, setStartDate] = useState("");
+
+  const [durationValue, setDurationValue] = useState("");
+  const [durationUnit, setDurationUnit] = useState("Days");
+
+  const [condition, setCondition] = useState("");
+  const [specialInstructions, setSpecialInstructions] = useState("");
+  const [consent, setConsent] = useState(false);
+
+  // ✅ WhatsApp modal state
+  const [waOpen, setWaOpen] = useState(false);
+  const [waMessage, setWaMessage] = useState("");
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    alert("Your homecare service request has been submitted.");
+
+    const message = `Hello Aarogya Hospital,
+
+I want to request Homecare Service.
+
+Patient Name: ${patientName}
+Age: ${age || "N/A"}
+Mobile Number (Primary Caregiver): ${mobile}
+City / Area: ${cityArea}
+
+Full Address / Landmark: ${address}
+
+Type of Homecare Service: ${serviceType || "N/A"}
+Support Needed For: ${supportNeededFor || "N/A"}
+Preferred Start Date: ${startDate || "N/A"}
+
+Expected Duration: ${
+      durationValue ? `${durationValue} ${durationUnit}` : "N/A"
+    }
+
+Patient condition / brief history: ${condition?.trim() ? condition.trim() : "N/A"}
+
+Any special instructions: ${
+      specialInstructions?.trim() ? specialInstructions.trim() : "N/A"
+    }
+
+Please call back to confirm availability and pricing.`;
+
+    setWaMessage(message);
+    setWaOpen(true);
   };
 
   return (
@@ -108,19 +229,19 @@ const HomecareServicesPage = () => {
             </span>
           </div>
 
-          {/* QUICK CALL CHIPS (looks good + optional) */}
+          {/* QUICK CALL CHIPS */}
           <div className="mt-4 flex flex-wrap justify-center gap-2">
             <a
-              href="tel:812001212"
+              href={`tel:${PHONE_1_TEL}`}
               className="text-[11px] px-3 py-1 rounded-full bg-white border border-gray-200 text-gray-700 hover:bg-gray-50"
             >
-              CALL: 812001212
+              CALL: 81200 12121
             </a>
             <a
-              href="tel:9827198000"
+              href={`tel:${PHONE_2_TEL}`}
               className="text-[11px] px-3 py-1 rounded-full bg-white border border-gray-200 text-gray-700 hover:bg-gray-50"
             >
-              CALL: 9827198000
+              CALL: 98271 98000
             </a>
           </div>
         </header>
@@ -212,7 +333,9 @@ const HomecareServicesPage = () => {
                   <input
                     type="text"
                     required
-                    className="w-full rounded-md border border-gray-300 px-2 py-1.5 text-xs focus:outline-none focus:ring-1 focus:ring-orange-400 focus:border-orange-400"
+                    value={patientName}
+                    onChange={(e) => setPatientName(e.target.value)}
+                    className="w-full rounded-md border border-gray-300 px-2 py-1.5 text-xs bg-white text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-orange-400 focus:border-orange-400"
                   />
                 </div>
                 <div>
@@ -222,7 +345,9 @@ const HomecareServicesPage = () => {
                   <input
                     type="number"
                     min="0"
-                    className="w-full rounded-md border border-gray-300 px-2 py-1.5 text-xs focus:outline-none focus:ring-1 focus:ring-orange-400 focus:border-orange-400"
+                    value={age}
+                    onChange={(e) => setAge(e.target.value)}
+                    className="w-full rounded-md border border-gray-300 px-2 py-1.5 text-xs bg-white text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-orange-400 focus:border-orange-400"
                   />
                 </div>
               </div>
@@ -235,7 +360,9 @@ const HomecareServicesPage = () => {
                   <input
                     type="tel"
                     required
-                    className="w-full rounded-md border border-gray-300 px-2 py-1.5 text-xs focus:outline-none focus:ring-1 focus:ring-orange-400 focus:border-orange-400"
+                    value={mobile}
+                    onChange={(e) => setMobile(e.target.value)}
+                    className="w-full rounded-md border border-gray-300 px-2 py-1.5 text-xs bg-white text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-orange-400 focus:border-orange-400"
                   />
                 </div>
                 <div>
@@ -245,7 +372,9 @@ const HomecareServicesPage = () => {
                   <input
                     type="text"
                     required
-                    className="w-full rounded-md border border-gray-300 px-2 py-1.5 text-xs focus:outline-none focus:ring-1 focus:ring-orange-400 focus:border-orange-400"
+                    value={cityArea}
+                    onChange={(e) => setCityArea(e.target.value)}
+                    className="w-full rounded-md border border-gray-300 px-2 py-1.5 text-xs bg-white text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-orange-400 focus:border-orange-400"
                   />
                 </div>
               </div>
@@ -257,7 +386,9 @@ const HomecareServicesPage = () => {
                 <textarea
                   rows={2}
                   required
-                  className="w-full rounded-md border border-gray-300 px-2 py-1.5 text-xs focus:outline-none focus:ring-1 focus:ring-orange-400 focus:border-orange-400"
+                  value={address}
+                  onChange={(e) => setAddress(e.target.value)}
+                  className="w-full rounded-md border border-gray-300 px-2 py-1.5 text-xs bg-white text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-orange-400 focus:border-orange-400"
                   placeholder="House no, street, landmark, locality..."
                 />
               </div>
@@ -269,7 +400,9 @@ const HomecareServicesPage = () => {
                 </label>
                 <select
                   required
-                  className="w-full rounded-md border border-gray-300 px-2 py-1.5 text-xs text-gray-800 focus:outline-none focus:ring-1 focus:ring-orange-400 focus:border-orange-400"
+                  value={serviceType}
+                  onChange={(e) => setServiceType(e.target.value)}
+                  className="w-full rounded-md border border-gray-300 px-2 py-1.5 text-xs bg-white text-gray-800 focus:outline-none focus:ring-1 focus:ring-orange-400 focus:border-orange-400"
                 >
                   <option value="">Select service</option>
                   <option>Nursing Care at Home</option>
@@ -287,7 +420,11 @@ const HomecareServicesPage = () => {
                   <label className="block text-[11px] text-gray-600 mb-1">
                     Support Needed For
                   </label>
-                  <select className="w-full rounded-md border border-gray-300 px-2 py-1.5 text-xs text-gray-800 focus:outline-none focus:ring-1 focus:ring-orange-400 focus:border-orange-400">
+                  <select
+                    value={supportNeededFor}
+                    onChange={(e) => setSupportNeededFor(e.target.value)}
+                    className="w-full rounded-md border border-gray-300 px-2 py-1.5 text-xs bg-white text-gray-800 focus:outline-none focus:ring-1 focus:ring-orange-400 focus:border-orange-400"
+                  >
                     <option>24 x 7 (Round the clock)</option>
                     <option>Day Shift Only</option>
                     <option>Night Shift Only</option>
@@ -301,7 +438,9 @@ const HomecareServicesPage = () => {
                   </label>
                   <input
                     type="date"
-                    className="w-full rounded-md border border-gray-300 px-2 py-1.5 text-xs text-gray-800 focus:outline-none focus:ring-1 focus:ring-orange-400 focus:border-orange-400"
+                    value={startDate}
+                    onChange={(e) => setStartDate(e.target.value)}
+                    className="w-full rounded-md border border-gray-300 px-2 py-1.5 text-xs bg-white text-gray-800 focus:outline-none focus:ring-1 focus:ring-orange-400 focus:border-orange-400"
                   />
                 </div>
               </div>
@@ -315,10 +454,16 @@ const HomecareServicesPage = () => {
                     <input
                       type="number"
                       min="1"
-                      className="w-20 rounded-md border border-gray-300 px-2 py-1.5 text-xs focus:outline-none focus:ring-1 focus:ring-orange-400 focus:border-orange-400"
+                      value={durationValue}
+                      onChange={(e) => setDurationValue(e.target.value)}
+                      className="w-20 rounded-md border border-gray-300 px-2 py-1.5 text-xs bg-white text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-orange-400 focus:border-orange-400"
                       placeholder="e.g. 10"
                     />
-                    <select className="flex-1 rounded-md border border-gray-300 px-2 py-1.5 text-xs text-gray-800 focus:outline-none focus:ring-1 focus:ring-orange-400 focus:border-orange-400">
+                    <select
+                      value={durationUnit}
+                      onChange={(e) => setDurationUnit(e.target.value)}
+                      className="flex-1 rounded-md border border-gray-300 px-2 py-1.5 text-xs bg-white text-gray-800 focus:outline-none focus:ring-1 focus:ring-orange-400 focus:border-orange-400"
+                    >
                       <option>Days</option>
                       <option>Weeks</option>
                       <option>Months</option>
@@ -334,7 +479,9 @@ const HomecareServicesPage = () => {
                 </label>
                 <textarea
                   rows={3}
-                  className="w-full rounded-md border border-gray-300 px-2 py-1.5 text-xs focus:outline-none focus:ring-1 focus:ring-orange-400 focus:border-orange-400"
+                  value={condition}
+                  onChange={(e) => setCondition(e.target.value)}
+                  className="w-full rounded-md border border-gray-300 px-2 py-1.5 text-xs bg-white text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-orange-400 focus:border-orange-400"
                   placeholder="Diagnosis, main issues (e.g. post-surgery, stroke, dementia, cancer, bed-ridden, etc.)"
                 />
               </div>
@@ -345,14 +492,22 @@ const HomecareServicesPage = () => {
                 </label>
                 <textarea
                   rows={2}
-                  className="w-full rounded-md border border-gray-300 px-2 py-1.5 text-xs focus:outline-none focus:ring-1 focus:ring-orange-400 focus:border-orange-400"
+                  value={specialInstructions}
+                  onChange={(e) => setSpecialInstructions(e.target.value)}
+                  className="w-full rounded-md border border-gray-300 px-2 py-1.5 text-xs bg-white text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-orange-400 focus:border-orange-400"
                   placeholder="Language preference, male/female staff, timing preference, etc."
                 />
               </div>
 
               {/* Consent */}
               <div className="flex items-start gap-2">
-                <input type="checkbox" className="mt-0.5" required />
+                <input
+                  type="checkbox"
+                  className="mt-0.5"
+                  required
+                  checked={consent}
+                  onChange={(e) => setConsent(e.target.checked)}
+                />
                 <p className="text-[10px] text-gray-600">
                   I agree to receive calls / messages from Aarogya Hospital
                   regarding homecare services, pricing and availability.
@@ -375,8 +530,13 @@ const HomecareServicesPage = () => {
         </p>
       </div>
 
-      {/* CALL MODAL */}
+      {/* MODALS */}
       <CallModal open={callOpen} onClose={() => setCallOpen(false)} />
+      <WhatsAppModal
+        open={waOpen}
+        onClose={() => setWaOpen(false)}
+        message={waMessage}
+      />
     </main>
   );
 };

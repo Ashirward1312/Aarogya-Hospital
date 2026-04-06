@@ -1,94 +1,135 @@
-import React, { useEffect, useState } from "react";
+// src/components/HeroSection.jsx
+import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { FiPhoneCall, FiCalendar } from "react-icons/fi";
 
-// Images
-import home1 from "../images/home1.jpg";
-import home2 from "../images/home2.jpg";
-import home3 from "../images/home3.jpg";
-import home4 from "../images/a1.PNG";
+import home2 from "../images/home2_.webp";
+import home3 from "../images/home3_.webp";
+import home4 from "../images/a1.webp";
 
-const HERO_IMAGES = [home1, home2, home3, home4];
+const HERO_IMAGES = [
+  `${import.meta.env.BASE_URL}home1.webp`,
+  home2,
+  home3,
+  home4,
+];
 
 const HeroSection = () => {
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [loaded, setLoaded] = useState(false);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [incomingIndex, setIncomingIndex] = useState(null);
+  const [incomingLoaded, setIncomingLoaded] = useState(false);
+  const timerRef = useRef(null);
+  const [heroReady, setHeroReady] = useState(false);
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      setActiveIndex((prev) => (prev + 1) % HERO_IMAGES.length);
-    }, 6000);
-    return () => clearInterval(timer);
+    const preload = () => {
+      HERO_IMAGES.slice(1).forEach((src) => {
+        const img = new Image();
+        img.src = src;
+      });
+    };
+
+    let id;
+    if ("requestIdleCallback" in window) id = window.requestIdleCallback(preload);
+    else id = setTimeout(preload, 1500);
+
+    return () => {
+      if ("cancelIdleCallback" in window) window.cancelIdleCallback(id);
+      else clearTimeout(id);
+    };
   }, []);
 
   useEffect(() => {
-    const t = setTimeout(() => setLoaded(true), 100);
+    if (!heroReady) return;
+
+    const prefersReducedMotion =
+      window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
+    if (prefersReducedMotion) return;
+
+    const start = () => {
+      if (timerRef.current) return;
+      timerRef.current = setInterval(() => {
+        const next = (currentIndex + 1) % HERO_IMAGES.length;
+        setIncomingIndex(next);
+        setIncomingLoaded(false);
+      }, 5000);
+    };
+
+    let id;
+    if ("requestIdleCallback" in window) id = window.requestIdleCallback(start);
+    else id = setTimeout(start, 1500);
+
+    return () => {
+      if ("cancelIdleCallback" in window) window.cancelIdleCallback(id);
+      else clearTimeout(id);
+      clearInterval(timerRef.current);
+      timerRef.current = null;
+    };
+  }, [heroReady, currentIndex]);
+
+  useEffect(() => {
+    if (incomingIndex === null || !incomingLoaded) return;
+    const t = setTimeout(() => {
+      setCurrentIndex(incomingIndex);
+      setIncomingIndex(null);
+      setIncomingLoaded(false);
+    }, 700);
     return () => clearTimeout(t);
-  }, []);
+  }, [incomingIndex, incomingLoaded]);
 
   return (
-    <section id="home" className="relative overflow-hidden bg-slate-950">
-      {/* Background Images */}
+    <section id="home" className="relative min-h-[90vh] overflow-hidden bg-slate-950">
       <div className="absolute inset-0">
-        {HERO_IMAGES.map((src, idx) => (
-          <img
-            key={idx}
-            src={src}
-            alt={`Aarogya Hospital banner ${idx + 1}`}
-            className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-[1200ms] ease-in-out ${
-              activeIndex === idx ? "opacity-100" : "opacity-0"
-            } ${idx === 3 ? "object-top md:scale-105" : ""}`}
-          />
-        ))}
+        <img
+          src={HERO_IMAGES[currentIndex]}
+          alt="Aarogya Hospital banner"
+          className="absolute inset-0 h-full w-full object-cover"
+          fetchPriority={currentIndex === 0 ? "high" : "low"}
+          decoding="async"
+          onLoad={() => {
+            if (!heroReady) setHeroReady(true);
+          }}
+        />
 
-        {/* Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-b from-slate-950/80 via-slate-950/60 to-slate-950/30" />
+        {incomingIndex !== null && (
+          <img
+            src={HERO_IMAGES[incomingIndex]}
+            alt=""
+            aria-hidden="true"
+            className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ${
+              incomingLoaded ? "opacity-100" : "opacity-0"
+            }`}
+            decoding="async"
+            onLoad={() => setIncomingLoaded(true)}
+          />
+        )}
+
+        <div className="absolute inset-0 bg-black/60" />
       </div>
 
-      {/* Content */}
       <div className="relative z-10 flex min-h-[90vh] items-center justify-center px-4">
-        <div
-          className={`mx-auto max-w-[1200px] text-center transition-all duration-700 ${
-            loaded ? "translate-y-0 opacity-100" : "translate-y-6 opacity-0"
-          }`}
-        >
-          {/* Hospital Name – Font 1 */}
-          <p className="font-inter text-2xl sm:text-3xl font-semibold tracking-[0.22em] text-slate-300">
-            AAROGYA SUPER SPECIALITY HOSPITAL
+        <div className="mx-auto w-full max-w-4xl text-center">
+          <p className="text-xs sm:text-sm font-semibold tracking-[0.26em] text-slate-300">
+            AAROGYA HOSPITAL
           </p>
 
-          {/* Headline – Font 2 */}
-          <h1 className="font-playfair mt-3 text-[1.4rem] sm:text-2xl lg:text-[2.8rem] leading-tight text-slate-100">
-            ADVANCED CARE
-            <span
-              className="block mt-1 bg-clip-text text-transparent font-semibold"
-              style={{
-                backgroundImage:
-                  "linear-gradient(90deg, #f97316, #fb923c)", // Orange CTA
-              }}
-            >
-              IN THE HEART OF RAIPUR
+          <h1 className="mt-4 text-3xl sm:text-4xl lg:text-6xl font-extrabold leading-[1.15] text-slate-100">
+            Best Super Speciality Hospital in{" "}
+            <span className="bg-gradient-to-r from-orange-400 to-orange-500 bg-clip-text text-transparent">
+              Raipur (C.G.)
             </span>
           </h1>
 
-          {/* CTA Buttons */}
-          <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
+          <p className="mt-4 text-sm sm:text-base lg:text-lg leading-relaxed text-slate-300">
             <Link
-              to="/appointment"
-              className="inline-flex items-center gap-2 rounded-full bg-orange-500 px-6 py-3 text-sm font-semibold text-white shadow-lg transition hover:bg-orange-600"
+              to="/"
+              className="font-semibold text-orange-300 underline decoration-orange-300/40 underline-offset-4 hover:text-orange-200"
             >
-              <FiCalendar />
-              Book Appointment
-            </Link>
-
-            <a
-              href="tel:+919999999999"
-              className="inline-flex items-center gap-2 rounded-full border border-slate-400/40 px-6 py-3 text-sm font-semibold text-slate-200 transition hover:bg-slate-800"
-            >
-              <FiPhoneCall />
-              Call Now
-            </a>
-          </div>
+              Aarogya Hospital
+            </Link>{" "}
+            We deliver trusted healthcare in Raipur through advanced treatments,
+            experienced doctors, and modern medical facilities—because your
+            health, safety, and recovery are always our top priorities.
+          </p>
         </div>
       </div>
     </section>

@@ -1,6 +1,14 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+/* ✅ NUMBERS */
+const PHONE_1_TEL = "+918120012121"; // 81200 12121
+const PHONE_2_TEL = "+919827198000"; // 98271 98000
+
+// ✅ WhatsApp (wa.me format without +)
+const WHATSAPP_1 = "919827198000"; // +91 98271 98000
+const WHATSAPP_2 = "918120012121"; // +91 81200 12121
+
 /* ---------------------------------------------
   CALL MODAL
 --------------------------------------------- */
@@ -29,17 +37,17 @@ const CallModal = ({ open, onClose }) => {
 
         <div className="grid gap-2">
           <a
-            href="tel:812001212"
+            href={`tel:${PHONE_1_TEL}`}
             className="w-full text-center rounded-md bg-orange-500 px-4 py-2 text-xs font-semibold text-white hover:bg-orange-600 transition uppercase"
           >
-            CALL 812001212
+            CALL 81200 12121
           </a>
 
           <a
-            href="tel:9827198000"
+            href={`tel:${PHONE_2_TEL}`}
             className="w-full text-center rounded-md border border-orange-300 bg-white px-4 py-2 text-xs font-semibold text-orange-600 hover:bg-orange-50 transition uppercase"
           >
-            CALL 9827198000
+            CALL 98271 98000
           </a>
         </div>
 
@@ -51,13 +59,120 @@ const CallModal = ({ open, onClose }) => {
   );
 };
 
+/* ---------------------------------------------
+  WHATSAPP MODAL (SEND)
+--------------------------------------------- */
+const WhatsAppModal = ({ open, onClose, message }) => {
+  if (!open) return null;
+
+  const openWhatsApp = (number) => {
+    const url = `https://wa.me/${number}?text=${encodeURIComponent(message)}`;
+    window.open(url, "_blank", "noopener,noreferrer");
+  };
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 px-4">
+      <div className="w-full max-w-md rounded-2xl bg-white shadow-xl border border-gray-200 p-5">
+        <div className="flex items-center justify-between mb-3">
+          <h3 className="text-sm font-semibold text-gray-900 uppercase">
+            SEND ON WHATSAPP
+          </h3>
+          <button
+            type="button"
+            onClick={onClose}
+            className="h-7 w-7 flex items-center justify-center rounded-full border border-gray-200 text-xs text-gray-500 hover:bg-gray-50"
+          >
+            ×
+          </button>
+        </div>
+
+        <p className="text-xs text-gray-600 mb-3">
+          Choose a WhatsApp number to send your request.
+        </p>
+
+        <div className="grid gap-2">
+          <button
+            type="button"
+            onClick={() => openWhatsApp(WHATSAPP_1)}
+            className="w-full text-center rounded-md bg-green-600 px-4 py-2 text-xs font-semibold text-white hover:bg-green-700 transition uppercase"
+          >
+            WHATSAPP 98271 98000
+          </button>
+
+          <button
+            type="button"
+            onClick={() => openWhatsApp(WHATSAPP_2)}
+            className="w-full text-center rounded-md border border-green-200 bg-white px-4 py-2 text-xs font-semibold text-green-700 hover:bg-green-50 transition uppercase"
+          >
+            WHATSAPP 81200 12121
+          </button>
+        </div>
+
+        <button
+          type="button"
+          onClick={onClose}
+          className="mt-3 w-full text-center rounded-md border border-gray-200 bg-white px-4 py-2 text-xs font-semibold text-gray-700 hover:bg-gray-50 transition uppercase"
+        >
+          CLOSE
+        </button>
+      </div>
+    </div>
+  );
+};
+
 const VirtualConsultationPage = () => {
   const navigate = useNavigate();
   const [callOpen, setCallOpen] = useState(false);
 
+  // ✅ WhatsApp modal state
+  const [waOpen, setWaOpen] = useState(false);
+  const [waMessage, setWaMessage] = useState("");
+
+  // ✅ form state (design/content same, only value/onChange added)
+  const [form, setForm] = useState({
+    patientName: "",
+    age: "",
+    mobile: "",
+    city: "",
+    specialty: "",
+    consultType: "New Consultation",
+    mode: "Video Call",
+    preferredDate: "",
+    timeSlot: "",
+    concern: "",
+    consent: false,
+  });
+
+  const handleChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    setForm((f) => ({ ...f, [name]: type === "checkbox" ? checked : value }));
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    alert("Your virtual consultation request has been submitted.");
+
+    const msg = `Hello Aarogya Hospital,
+
+I want to book a virtual consultation.
+
+Patient Name: ${form.patientName}
+Age: ${form.age || "N/A"}
+Mobile Number: ${form.mobile}
+City: ${form.city || "N/A"}
+
+Department / Specialty: ${form.specialty || "N/A"}
+Consultation Type: ${form.consultType || "N/A"}
+Mode: ${form.mode || "N/A"}
+
+Preferred Date: ${form.preferredDate || "N/A"}
+Preferred Time Slot: ${form.timeSlot || "N/A"}
+
+Concern: ${form.concern?.trim() ? form.concern.trim() : "N/A"}
+
+Please confirm slot availability and consultation fees.`;
+
+    setWaMessage(msg);
+    setWaOpen(true);
   };
 
   return (
@@ -111,16 +226,16 @@ const VirtualConsultationPage = () => {
           {/* QUICK CALL CHIPS */}
           <div className="mt-4 flex flex-wrap justify-center gap-2">
             <a
-              href="tel:812001212"
+              href={`tel:${PHONE_1_TEL}`}
               className="text-[11px] px-3 py-1 rounded-full bg-white border border-gray-200 text-gray-700 hover:bg-gray-50"
             >
-              CALL: 812001212
+              CALL: 81200 12121
             </a>
             <a
-              href="tel:9827198000"
+              href={`tel:${PHONE_2_TEL}`}
               className="text-[11px] px-3 py-1 rounded-full bg-white border border-gray-200 text-gray-700 hover:bg-gray-50"
             >
-              CALL: 9827198000
+              CALL: 98271 98000
             </a>
           </div>
         </header>
@@ -213,8 +328,11 @@ const VirtualConsultationPage = () => {
                   </label>
                   <input
                     type="text"
+                    name="patientName"
                     required
-                    className="w-full rounded-md border border-gray-300 px-2 py-1.5 text-xs focus:outline-none focus:ring-1 focus:ring-orange-400 focus:border-orange-400"
+                    value={form.patientName}
+                    onChange={handleChange}
+                    className="w-full rounded-md border border-gray-300 px-2 py-1.5 text-xs bg-white text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-orange-400 focus:border-orange-400"
                   />
                 </div>
                 <div>
@@ -224,7 +342,10 @@ const VirtualConsultationPage = () => {
                   <input
                     type="number"
                     min="0"
-                    className="w-full rounded-md border border-gray-300 px-2 py-1.5 text-xs focus:outline-none focus:ring-1 focus:ring-orange-400 focus:border-orange-400"
+                    name="age"
+                    value={form.age}
+                    onChange={handleChange}
+                    className="w-full rounded-md border border-gray-300 px-2 py-1.5 text-xs bg-white text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-orange-400 focus:border-orange-400"
                   />
                 </div>
               </div>
@@ -236,8 +357,11 @@ const VirtualConsultationPage = () => {
                   </label>
                   <input
                     type="tel"
+                    name="mobile"
                     required
-                    className="w-full rounded-md border border-gray-300 px-2 py-1.5 text-xs focus:outline-none focus:ring-1 focus:ring-orange-400 focus:border-orange-400"
+                    value={form.mobile}
+                    onChange={handleChange}
+                    className="w-full rounded-md border border-gray-300 px-2 py-1.5 text-xs bg-white text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-orange-400 focus:border-orange-400"
                   />
                 </div>
                 <div>
@@ -246,7 +370,10 @@ const VirtualConsultationPage = () => {
                   </label>
                   <input
                     type="text"
-                    className="w-full rounded-md border border-gray-300 px-2 py-1.5 text-xs focus:outline-none focus:ring-1 focus:ring-orange-400 focus:border-orange-400"
+                    name="city"
+                    value={form.city}
+                    onChange={handleChange}
+                    className="w-full rounded-md border border-gray-300 px-2 py-1.5 text-xs bg-white text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-orange-400 focus:border-orange-400"
                   />
                 </div>
               </div>
@@ -256,7 +383,12 @@ const VirtualConsultationPage = () => {
                 <label className="block text-[11px] text-gray-600 mb-1">
                   Department / Specialty
                 </label>
-                <select className="w-full rounded-md border border-gray-300 px-2 py-1.5 text-xs text-gray-800 focus:outline-none focus:ring-1 focus:ring-orange-400 focus:border-orange-400">
+                <select
+                  name="specialty"
+                  value={form.specialty}
+                  onChange={handleChange}
+                  className="w-full rounded-md border border-gray-300 px-2 py-1.5 text-xs bg-white text-gray-800 focus:outline-none focus:ring-1 focus:ring-orange-400 focus:border-orange-400"
+                >
                   <option value="">Select specialty</option>
                   <option>General Physician</option>
                   <option>Cardiology (Heart)</option>
@@ -275,7 +407,12 @@ const VirtualConsultationPage = () => {
                   <label className="block text-[11px] text-gray-600 mb-1">
                     Consultation Type
                   </label>
-                  <select className="w-full rounded-md border border-gray-300 px-2 py-1.5 text-xs text-gray-800 focus:outline-none focus:ring-1 focus:ring-orange-400 focus:border-orange-400">
+                  <select
+                    name="consultType"
+                    value={form.consultType}
+                    onChange={handleChange}
+                    className="w-full rounded-md border border-gray-300 px-2 py-1.5 text-xs bg-white text-gray-800 focus:outline-none focus:ring-1 focus:ring-orange-400 focus:border-orange-400"
+                  >
                     <option>New Consultation</option>
                     <option>Follow-up Consultation</option>
                   </select>
@@ -284,7 +421,12 @@ const VirtualConsultationPage = () => {
                   <label className="block text-[11px] text-gray-600 mb-1">
                     Mode
                   </label>
-                  <select className="w-full rounded-md border border-gray-300 px-2 py-1.5 text-xs text-gray-800 focus:outline-none focus:ring-1 focus:ring-orange-400 focus:border-orange-400">
+                  <select
+                    name="mode"
+                    value={form.mode}
+                    onChange={handleChange}
+                    className="w-full rounded-md border border-gray-300 px-2 py-1.5 text-xs bg-white text-gray-800 focus:outline-none focus:ring-1 focus:ring-orange-400 focus:border-orange-400"
+                  >
                     <option>Video Call</option>
                     <option>Audio Call</option>
                   </select>
@@ -299,14 +441,22 @@ const VirtualConsultationPage = () => {
                   </label>
                   <input
                     type="date"
-                    className="w-full rounded-md border border-gray-300 px-2 py-1.5 text-xs text-gray-800 focus:outline-none focus:ring-1 focus:ring-orange-400 focus:border-orange-400"
+                    name="preferredDate"
+                    value={form.preferredDate}
+                    onChange={handleChange}
+                    className="w-full rounded-md border border-gray-300 px-2 py-1.5 text-xs bg-white text-gray-800 focus:outline-none focus:ring-1 focus:ring-orange-400 focus:border-orange-400"
                   />
                 </div>
                 <div>
                   <label className="block text-[11px] text-gray-600 mb-1">
                     Preferred Time Slot
                   </label>
-                  <select className="w-full rounded-md border border-gray-300 px-2 py-1.5 text-xs text-gray-800 focus:outline-none focus:ring-1 focus:ring-orange-400 focus:border-orange-400">
+                  <select
+                    name="timeSlot"
+                    value={form.timeSlot}
+                    onChange={handleChange}
+                    className="w-full rounded-md border border-gray-300 px-2 py-1.5 text-xs bg-white text-gray-800 focus:outline-none focus:ring-1 focus:ring-orange-400 focus:border-orange-400"
+                  >
                     <option value="">Select time slot</option>
                     <option>09:00 AM – 11:00 AM</option>
                     <option>11:00 AM – 01:00 PM</option>
@@ -324,14 +474,24 @@ const VirtualConsultationPage = () => {
                 </label>
                 <textarea
                   rows={3}
-                  className="w-full rounded-md border border-gray-300 px-2 py-1.5 text-xs focus:outline-none focus:ring-1 focus:ring-orange-400 focus:border-orange-400"
+                  name="concern"
+                  value={form.concern}
+                  onChange={handleChange}
+                  className="w-full rounded-md border border-gray-300 px-2 py-1.5 text-xs bg-white text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-orange-400 focus:border-orange-400"
                   placeholder="Main symptoms, duration, any diagnosis or treatment already started..."
                 />
               </div>
 
               {/* Consent */}
               <div className="flex items-start gap-2">
-                <input type="checkbox" className="mt-0.5" required />
+                <input
+                  type="checkbox"
+                  name="consent"
+                  className="mt-0.5"
+                  required
+                  checked={form.consent}
+                  onChange={handleChange}
+                />
                 <p className="text-[10px] text-gray-600">
                   I understand that this is a virtual consultation and not a
                   substitute for emergency care. I agree to receive calls /
@@ -350,8 +510,13 @@ const VirtualConsultationPage = () => {
         </div>
       </div>
 
-      {/* CALL MODAL */}
+      {/* MODALS */}
       <CallModal open={callOpen} onClose={() => setCallOpen(false)} />
+      <WhatsAppModal
+        open={waOpen}
+        onClose={() => setWaOpen(false)}
+        message={waMessage}
+      />
     </main>
   );
 };

@@ -1,5 +1,5 @@
-// src/Components/BookTest/BookTestPage.jsx  (or wherever you keep it)
-import React, { useState } from "react";
+// src/Components/BookTest/BookTestPage.jsx
+import React, { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const commonTests = [
@@ -16,6 +16,10 @@ const commonTests = [
   "Urine Routine",
   "Complete Urine Examination",
 ];
+
+// ✅ WhatsApp numbers (wa.me format without +)
+const WHATSAPP_1 = "919827198000"; // +91 98271 98000
+const WHATSAPP_2 = "918120012121"; // +91 81200 12121
 
 /* ---------------------------------------------
   CALL MODAL
@@ -46,17 +50,17 @@ const CallModal = ({ open, onClose }) => {
 
         <div className="grid gap-2">
           <a
-            href="tel:812001212"
+            href="tel:+918120012121"
             className="w-full text-center rounded-md bg-orange-500 px-4 py-2 text-xs font-semibold text-white hover:bg-orange-600 transition uppercase"
           >
-            CALL 812001212
+            CALL 81200 12121
           </a>
 
           <a
-            href="tel:9827198000"
+            href="tel:+919827198000"
             className="w-full text-center rounded-md border border-orange-300 bg-white px-4 py-2 text-xs font-semibold text-orange-600 hover:bg-orange-50 transition uppercase"
           >
-            CALL 9827198000
+            CALL 98271 98000
           </a>
         </div>
 
@@ -68,13 +72,143 @@ const CallModal = ({ open, onClose }) => {
   );
 };
 
+/* ---------------------------------------------
+  WHATSAPP MODAL (2 numbers)
+--------------------------------------------- */
+const WhatsAppModal = ({ open, onClose, message }) => {
+  if (!open) return null;
+
+  const openWhatsApp = (number) => {
+    const url = `https://wa.me/${number}?text=${encodeURIComponent(message)}`;
+    window.open(url, "_blank", "noopener,noreferrer");
+  };
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 px-4">
+      <div className="w-full max-w-md rounded-2xl bg-white shadow-xl border border-gray-200 p-5">
+        <div className="flex items-center justify-between mb-3">
+          <h3 className="text-sm font-semibold text-gray-900 uppercase">
+            SEND ON WHATSAPP
+          </h3>
+          <button
+            type="button"
+            onClick={onClose}
+            className="h-7 w-7 flex items-center justify-center rounded-full border border-gray-200 text-xs text-gray-500 hover:bg-gray-50"
+          >
+            ×
+          </button>
+        </div>
+
+        <p className="text-xs text-gray-600 mb-3">
+          Dono numbers par bhejna ho to dono buttons ek-ek karke click kar do.
+        </p>
+
+        <div className="rounded-lg border border-gray-200 bg-gray-50 p-3 mb-4">
+          <p className="text-[11px] font-semibold text-gray-500 uppercase mb-1">
+            Preview
+          </p>
+          <pre className="whitespace-pre-wrap text-[11px] text-gray-800 leading-relaxed">
+            {message}
+          </pre>
+        </div>
+
+        <div className="grid gap-2">
+          <button
+            type="button"
+            onClick={() => openWhatsApp(WHATSAPP_1)}
+            className="w-full text-center rounded-md bg-green-600 px-4 py-2 text-xs font-semibold text-white hover:bg-green-700 transition uppercase"
+          >
+            WHATSAPP 98271 98000
+          </button>
+
+          <button
+            type="button"
+            onClick={() => openWhatsApp(WHATSAPP_2)}
+            className="w-full text-center rounded-md border border-green-200 bg-white px-4 py-2 text-xs font-semibold text-green-700 hover:bg-green-50 transition uppercase"
+          >
+            WHATSAPP 81200 12121
+          </button>
+
+          <button
+            type="button"
+            onClick={onClose}
+            className="w-full text-center rounded-md border border-gray-200 bg-white px-4 py-2 text-xs font-semibold text-gray-700 hover:bg-gray-50 transition uppercase"
+          >
+            CLOSE
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const BookTestPage = () => {
   const navigate = useNavigate();
   const [callOpen, setCallOpen] = useState(false);
 
+  // ✅ WhatsApp modal state
+  const [waOpen, setWaOpen] = useState(false);
+  const [waMessage, setWaMessage] = useState("");
+
+  // ✅ form state (so message can be generated)
+  const [form, setForm] = useState({
+    patientName: "",
+    age: "",
+    mobile: "",
+    city: "",
+    collectionType: "Home Sample Collection",
+    preferredDate: "",
+    otherTests: "",
+    notes: "",
+    consent: false,
+  });
+
+  const [selectedTests, setSelectedTests] = useState([]);
+
+  const toggleTest = (test) => {
+    setSelectedTests((prev) =>
+      prev.includes(test) ? prev.filter((t) => t !== test) : [...prev, test]
+    );
+  };
+
+  const handleChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    setForm((f) => ({ ...f, [name]: type === "checkbox" ? checked : value }));
+  };
+
+  const cleanList = (arr) => arr.filter(Boolean).join(", ");
+
+  const whatsappText = useMemo(() => {
+    const testsLine =
+      selectedTests.length > 0 ? cleanList(selectedTests) : "N/A";
+
+    return `Hello Aarogya Hospital,
+
+I want to book a lab test.
+
+PATIENT NAME: ${form.patientName}
+AGE: ${form.age || "N/A"}
+MOBILE: ${form.mobile}
+CITY/AREA: ${form.city || "N/A"}
+
+COLLECTION TYPE: ${form.collectionType}
+PREFERRED DATE: ${form.preferredDate || "N/A"}
+
+COMMON TESTS: ${testsLine}
+
+OTHER TESTS (TYPED): ${form.otherTests?.trim() ? form.otherTests.trim() : "N/A"}
+
+ADDITIONAL INFO: ${form.notes?.trim() ? form.notes.trim() : "N/A"}
+
+Please confirm pricing, fasting instructions and time slot.`;
+  }, [form, selectedTests]);
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    alert("Your test booking request has been submitted.");
+
+    if (!form.consent) return; // safety
+    setWaMessage(whatsappText);
+    setWaOpen(true);
   };
 
   return (
@@ -124,19 +258,19 @@ const BookTestPage = () => {
             </span>
           </div>
 
-          {/* Quick call links (optional, looks good) */}
+          {/* Quick call links */}
           <div className="mt-4 flex flex-wrap justify-center gap-2">
             <a
-              href="tel:812001212"
+              href="tel:+918120012121"
               className="text-[11px] px-3 py-1 rounded-full bg-white border border-gray-200 text-gray-700 hover:bg-gray-50"
             >
-              CALL: 812001212
+              CALL: 81200 12121
             </a>
             <a
-              href="tel:9827198000"
+              href="tel:+919827198000"
               className="text-[11px] px-3 py-1 rounded-full bg-white border border-gray-200 text-gray-700 hover:bg-gray-50"
             >
-              CALL: 9827198000
+              CALL: 98271 98000
             </a>
           </div>
         </header>
@@ -185,7 +319,6 @@ const BookTestPage = () => {
               </p>
             </div>
 
-            {/* Extra: call CTA on left */}
             <div className="rounded-xl border border-orange-100 bg-white p-4 shadow-sm">
               <div className="flex items-center justify-between gap-3">
                 <div>
@@ -213,8 +346,7 @@ const BookTestPage = () => {
               BOOK YOUR TEST
             </h2>
             <p className="text-[11px] text-gray-500 mb-4">
-              Select from common tests below, or type your own test names. Our
-              team will confirm availability, price and timing.
+              Form submit करने के बाद WhatsApp पर message भेजने का option आएगा.
             </p>
 
             <form onSubmit={handleSubmit} className="space-y-3">
@@ -225,19 +357,28 @@ const BookTestPage = () => {
                     Patient Name
                   </label>
                   <input
+                    name="patientName"
+                    value={form.patientName}
+                    onChange={handleChange}
                     type="text"
                     required
-                    className="w-full rounded-md border border-gray-300 px-2 py-1.5 text-xs focus:outline-none focus:ring-1 focus:ring-orange-400 focus:border-orange-400"
+                    className="w-full rounded-md border border-gray-300 bg-white px-2 py-1.5 text-xs text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-orange-400 focus:border-orange-400"
+                    placeholder="Enter patient name"
                   />
                 </div>
+
                 <div>
                   <label className="block text-[11px] text-gray-600 mb-1">
                     Age
                   </label>
                   <input
+                    name="age"
+                    value={form.age}
+                    onChange={handleChange}
                     type="number"
                     min="0"
-                    className="w-full rounded-md border border-gray-300 px-2 py-1.5 text-xs focus:outline-none focus:ring-1 focus:ring-orange-400 focus:border-orange-400"
+                    className="w-full rounded-md border border-gray-300 bg-white px-2 py-1.5 text-xs text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-orange-400 focus:border-orange-400"
+                    placeholder="e.g. 35"
                   />
                 </div>
               </div>
@@ -248,18 +389,27 @@ const BookTestPage = () => {
                     Mobile Number
                   </label>
                   <input
+                    name="mobile"
+                    value={form.mobile}
+                    onChange={handleChange}
                     type="tel"
                     required
-                    className="w-full rounded-md border border-gray-300 px-2 py-1.5 text-xs focus:outline-none focus:ring-1 focus:ring-orange-400 focus:border-orange-400"
+                    className="w-full rounded-md border border-gray-300 bg-white px-2 py-1.5 text-xs text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-orange-400 focus:border-orange-400"
+                    placeholder="e.g. 98xxxxxx00"
                   />
                 </div>
+
                 <div>
                   <label className="block text-[11px] text-gray-600 mb-1">
                     City / Area
                   </label>
                   <input
+                    name="city"
+                    value={form.city}
+                    onChange={handleChange}
                     type="text"
-                    className="w-full rounded-md border border-gray-300 px-2 py-1.5 text-xs focus:outline-none focus:ring-1 focus:ring-orange-400 focus:border-orange-400"
+                    className="w-full rounded-md border border-gray-300 bg-white px-2 py-1.5 text-xs text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-orange-400 focus:border-orange-400"
+                    placeholder="Raipur / Shankar Nagar..."
                   />
                 </div>
               </div>
@@ -270,18 +420,27 @@ const BookTestPage = () => {
                   <label className="block text-[11px] text-gray-600 mb-1">
                     Collection Type
                   </label>
-                  <select className="w-full rounded-md border border-gray-300 px-2 py-1.5 text-xs text-gray-800 focus:outline-none focus:ring-1 focus:ring-orange-400 focus:border-orange-400">
+                  <select
+                    name="collectionType"
+                    value={form.collectionType}
+                    onChange={handleChange}
+                    className="w-full rounded-md border border-gray-300 bg-white px-2 py-1.5 text-xs text-gray-900 focus:outline-none focus:ring-1 focus:ring-orange-400 focus:border-orange-400"
+                  >
                     <option>Home Sample Collection</option>
                     <option>Visit Lab / Hospital</option>
                   </select>
                 </div>
+
                 <div>
                   <label className="block text-[11px] text-gray-600 mb-1">
                     Preferred Date
                   </label>
                   <input
+                    name="preferredDate"
+                    value={form.preferredDate}
+                    onChange={handleChange}
                     type="date"
-                    className="w-full rounded-md border border-gray-300 px-2 py-1.5 text-xs text-gray-800 focus:outline-none focus:ring-1 focus:ring-orange-400 focus:border-orange-400"
+                    className="w-full rounded-md border border-gray-300 bg-white px-2 py-1.5 text-xs text-gray-900 focus:outline-none focus:ring-1 focus:ring-orange-400 focus:border-orange-400"
                   />
                 </div>
               </div>
@@ -297,7 +456,12 @@ const BookTestPage = () => {
                       key={test}
                       className="flex items-center gap-2 text-[11px] text-gray-700"
                     >
-                      <input type="checkbox" className="h-3.5 w-3.5" />
+                      <input
+                        type="checkbox"
+                        checked={selectedTests.includes(test)}
+                        onChange={() => toggleTest(test)}
+                        className="h-3.5 w-3.5"
+                      />
                       <span>{test}</span>
                     </label>
                   ))}
@@ -313,9 +477,12 @@ const BookTestPage = () => {
                   Other tests (type here)
                 </label>
                 <textarea
+                  name="otherTests"
+                  value={form.otherTests}
+                  onChange={handleChange}
                   rows={3}
-                  className="w-full rounded-md border border-gray-300 px-2 py-1.5 text-xs focus:outline-none focus:ring-1 focus:ring-orange-400 focus:border-orange-400"
-                  placeholder="Example: Serum Iron, CRP, D-Dimer, specific test names prescribed by your doctor..."
+                  className="w-full rounded-md border border-gray-300 bg-white px-2 py-1.5 text-xs text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-orange-400 focus:border-orange-400"
+                  placeholder="Example: Serum Iron, CRP, D-Dimer, etc..."
                 />
                 <p className="mt-1 text-[10px] text-gray-500">
                   Write exact test names as written on your prescription for
@@ -329,15 +496,25 @@ const BookTestPage = () => {
                   Any additional information (optional)
                 </label>
                 <textarea
+                  name="notes"
+                  value={form.notes}
+                  onChange={handleChange}
                   rows={2}
-                  className="w-full rounded-md border border-gray-300 px-2 py-1.5 text-xs focus:outline-none focus:ring-1 focus:ring-orange-400 focus:border-orange-400"
-                  placeholder="Fasting/non-fasting, morning/evening preference, any special instructions from doctor..."
+                  className="w-full rounded-md border border-gray-300 bg-white px-2 py-1.5 text-xs text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-orange-400 focus:border-orange-400"
+                  placeholder="Fasting/non-fasting, morning/evening preference, etc..."
                 />
               </div>
 
               {/* Consent */}
               <div className="flex items-start gap-2">
-                <input type="checkbox" className="mt-0.5" required />
+                <input
+                  name="consent"
+                  checked={form.consent}
+                  onChange={handleChange}
+                  type="checkbox"
+                  className="mt-0.5"
+                  required
+                />
                 <p className="text-[10px] text-gray-600">
                   I agree to receive calls / messages from Aarogya Hospital
                   regarding my test booking, pricing and confirmation.
@@ -348,7 +525,7 @@ const BookTestPage = () => {
                 type="submit"
                 className="w-full mt-1 inline-flex items-center justify-center rounded-md bg-orange-500 px-4 py-2 text-xs font-semibold text-white hover:bg-orange-600 transition"
               >
-                BOOK TEST
+                SEND ON WHATSAPP
               </button>
             </form>
           </section>
@@ -360,8 +537,13 @@ const BookTestPage = () => {
         </p>
       </div>
 
-      {/* CALL MODAL */}
+      {/* MODALS */}
       <CallModal open={callOpen} onClose={() => setCallOpen(false)} />
+      <WhatsAppModal
+        open={waOpen}
+        onClose={() => setWaOpen(false)}
+        message={waMessage}
+      />
     </main>
   );
 };

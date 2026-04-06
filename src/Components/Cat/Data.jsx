@@ -1,6 +1,9 @@
 // src/data/doctorsData.js
-import DrRishiImage from "../images/d1.JPEG";
-import DrPritiImage from "../images/d2.jpeg";
+import DrRishiImage from "../images/DR-Rishi.webp";
+import DrPritiImage from "../images/DR.priti.webp";
+import DrChiragImage from "../images/DR.Chirag.webp";
+import DrDeepakImage from "../images/DR.Deepak.webp";
+import DrPankajImage from "../images/DR.Pankaj.webp";
 
 export const doctors = [
   {
@@ -36,7 +39,7 @@ export const doctors = [
     hospitalExperience: "VMMC & Safdarjung Hospital, New Delhi",
     procedures: "Performed 5000+ successful cardiac procedures",
     expertise: "Extensive expertise and clinical experience in cardiology",
-    image: null,
+    image: DrChiragImage,
   },
   {
     sl: 4,
@@ -46,7 +49,8 @@ export const doctors = [
     council: "CGMC",
     regNo: "641/2006",
     department: "Orthopedics",
-    image: null,
+    image: DrDeepakImage,
+
   },
   {
     sl: 5,
@@ -56,7 +60,7 @@ export const doctors = [
     council: "CGMC",
     regNo: "1345/2008",
     department: "Medicine",
-    image: null,
+    image: DrPankajImage,
   },
   {
     sl: 6,

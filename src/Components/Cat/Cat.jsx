@@ -107,6 +107,56 @@ const Department = () => {
   const [imgError, setImgError] = useState(false);
   const navigate = useNavigate();
 
+  // Meta Title + Meta Description + Canonical + OG (added)
+  React.useEffect(() => {
+    const pageTitle =
+      "Best Doctors in Raipur | Aarogya Super Speciality Hospital";
+
+    document.title = pageTitle;
+
+    const descriptionContent =
+      "Meet experienced doctors at Aarogya Hospital Raipur providing expert consultation, advanced treatments, and personalized patient care. Best Doctors in Raipur (C.G)";
+
+    let meta = document.querySelector('meta[name="description"]');
+    if (!meta) {
+      meta = document.createElement("meta");
+      meta.setAttribute("name", "description");
+      document.head.appendChild(meta);
+    }
+    meta.setAttribute("content", descriptionContent);
+
+    // Canonical Tag 
+    const canonicalUrl = "https://www.aarogyahospitalraipur.com/doctors";
+    let canonical = document.querySelector('link[rel="canonical"]');
+    if (!canonical) {
+      canonical = document.createElement("link");
+      canonical.setAttribute("rel", "canonical");
+      document.head.appendChild(canonical);
+    }
+    canonical.setAttribute("href", canonicalUrl);
+
+    // Open Graph 
+    const setOg = (property, content) => {
+      let tag = document.querySelector(`meta[property="${property}"]`);
+      if (!tag) {
+        tag = document.createElement("meta");
+        tag.setAttribute("property", property);
+        document.head.appendChild(tag);
+      }
+      tag.setAttribute("content", content);
+    };
+
+    setOg("og:type", "website");
+    setOg("og:url", "https://www.aarogyahospitalraipur.com/doctors");
+    setOg("og:title", "Best Doctors in Raipur | Aarogya Super Speciality Hospital");
+    setOg("og:description", "Meet experienced doctors at Aarogya Hospital Raipur providing expert consultation, advanced treatments, and personalized patient care. Best Doctors in Raipur (C.G)");
+    setOg(
+      "og:image",
+      "https://www.aarogyahospitalraipur.com/assets/logo1-BEkNzzrJ.jpg"
+    );
+    setOg("og:site_name", "Aarogya Hospital Raipur");
+  }, []);
+
   const activeDoctor = useMemo(() => {
     return activeId != null ? doctors.find((d) => d.sl === activeId) : null;
   }, [activeId]);
@@ -386,7 +436,7 @@ const Department = () => {
                   }}
                   className="flex-1 bg-[#F04E30] hover:bg-[#d54428] text-white text-sm font-semibold py-2.5 rounded-lg shadow-sm shadow-[#F04E30]/30 transition-colors uppercase tracking-[0.14em]"
                 >
-                  BOOK APPOINTMENT 
+                  BOOK APPOINTMENT
                 </button>
 
                 <button
