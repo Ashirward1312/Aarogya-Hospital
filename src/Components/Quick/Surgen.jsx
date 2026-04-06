@@ -26,7 +26,7 @@ import { MdOutlineVerifiedUser, MdLocalHospital } from "react-icons/md";
 
 import Rishiimg from "../images/dr1.png";
 import suregn from "../images/op_.webp";
-import img from "../images/a.png";
+import img from "../images/ss.png";
 
 /* ─────────────────────── Reusable UI ─────────────────────── */
 
