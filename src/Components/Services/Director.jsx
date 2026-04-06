@@ -1,7 +1,7 @@
 import React from "react";
 import DrRishiImage from "../images/DR-Rishi.webp";
 import DrPritiImage from "../images/DR.priti.webp";
-import DrChiragImage from "../images/DR.chirag.webp";
+import DrChiragImage from "../images/DR.Chirag.webp";
 
 const leaders = [
   {
