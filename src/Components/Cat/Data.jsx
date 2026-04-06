@@ -1,9 +1,9 @@
 // src/data/doctorsData.js
-import DrRishiImage from "../images/DR-Rishi.webp";
-import DrPritiImage from "../images/DR.priti.webp";
-import DrChiragImage from "../images/DR.Chirag.webp";
-import DrDeepakImage from "../images/DR.Deepak.webp";
-import DrPankajImage from "../images/DR.Pankaj.webp";
+import DrRishiImage from "../images/drrishi.webp";
+import DrPritiImage from "../images/drpriti.webp";
+import DrChiragImage from "../images/drchirag.webp";
+import DrDeepakImage from "../images/drdeepak.webp";
+import DrPankajImage from "../images/drpankaj.webp";
 
 export const doctors = [
   {
