@@ -14,7 +14,6 @@ import { Link } from "react-router-dom";
 WHATSAPP NUMBERS (wa.me format)
 ----------------------------- */
 const WHATSAPP_1 = "919827198000"; // +91 98271 98000
-const WHATSAPP_2 = "918120012121"; // +91 81200 12121
 
 /* -----------------------------
 WHATSAPP MODAL (2 numbers)
@@ -59,14 +58,6 @@ const WhatsAppModal = ({ open, onClose, message }) => {
             className="w-full rounded-md bg-green-600 px-4 py-2 text-xs font-semibold text-white hover:bg-green-700 transition uppercase"
           >
             WhatsApp 98271 98000
-          </button>
-
-          <button
-            type="button"
-            onClick={() => openWhatsApp(WHATSAPP_2)}
-            className="w-full rounded-md border border-green-200 bg-white px-4 py-2 text-xs font-semibold text-green-700 hover:bg-green-50 transition uppercase"
-          >
-            WhatsApp 81200 12121
           </button>
 
           <button
@@ -172,12 +163,10 @@ const AppointmentPage = () => {
 
   const departmentLabel = useMemo(() => {
     const d = formData.department;
-    if (d === "gyne") return "Obstetrics, Gynecology & Infertility";
-    if (d === "ivf") return "IVF & Test Tube Baby";
-    if (d === "surgery") return "Laparoscopic & General Surgery";
-    if (d === "medicine") return "Internal Medicine";
+    if (d === "cardio") return "Cardiology (Heart)";
     if (d === "ortho") return "Orthopedics";
-    if (d === "pediatrics") return "Pediatrics";
+    if (d === "gyne") return "Obstetrics, Gynecology & Infertility";
+    if (d === "surgery") return "Laparoscopic & General Surgery";
     if (d === "other") return formData.customDepartment || "OTHER";
     return "";
   }, [formData.department, formData.customDepartment]);
@@ -361,16 +350,14 @@ ${payload.message}`;
                     className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-[12px] text-slate-900 outline-none transition-all duration-200 hover:border-slate-300 focus:-translate-y-[1px] focus:border-[#F04E30] focus:bg-white focus:ring-1 focus:ring-[#F04E30]/60"
                   >
                     <option value="">Select department</option>
+                    <option value="cardio">Cardiology (Heart)</option>
+                    <option value="ortho">Orthopedics</option>
                     <option value="gyne">
                       Obstetrics, Gynecology &amp; Infertility
                     </option>
-                    <option value="ivf">IVF &amp; Test Tube Baby</option>
                     <option value="surgery">
                       Laparoscopic &amp; General Surgery
                     </option>
-                    <option value="medicine">Internal Medicine</option>
-                    <option value="ortho">Orthopedics</option>
-                    <option value="pediatrics">Pediatrics</option>
                     <option value="other">Other (type manually)</option>
                   </select>
 

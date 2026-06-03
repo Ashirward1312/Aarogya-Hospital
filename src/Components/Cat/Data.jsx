@@ -31,8 +31,6 @@ export const doctors = [
     name: "Dr. Chirag Agrawal",
     designation: "Senior Consultant & Interventional Cardiologist",
     qualification: "MBBS, MD (Medicine), DM (Cardiology)",
-    council: "CGMC",
-    regNo: "641/2006",
     department: "Cardiology",
     achievements: ["Gold Medallist", "9 Academic Distinctions"],
     experience: "Trained at premier central institute",

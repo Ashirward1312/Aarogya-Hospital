@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FiPhoneCall, FiCalendar, FiMenu, FiX, FiChevronDown } from "react-icons/fi";
-import logo from "../images/logo1.jpg";
+import logo from "../images/Aarogya Hospital Raipur.jpg";
 
 const Header = () => {
   const [open, setOpen] = useState(false);
@@ -16,6 +16,17 @@ const Header = () => {
     { label: "HOME", path: "/", sectionId: null },
     { label: "ABOUT", path: "/", sectionId: "about" },
     { label: "DOCTORS", path: "/doctors", sectionId: null },
+    {
+      label: "DEPARTMENTS",
+      path: "/departments",
+      sectionId: null,
+      subLinks: [
+        { label: "Cardiology", path: "/departments/best-cardiology-and-heart-hospital-in-raipur", sectionId: null },
+        { label: "General Surgery", path: "/departments/general-laparoscopy-surgery-hospital-in-raipur", sectionId: null },
+        { label: "Gynaecology", path: "/departments/gynaecology-hospital-in-raipur", sectionId: null },
+        { label: "Orthopedics", path: "/departments/orthopedics-hospital-in-raipur", sectionId: null },
+      ]
+    },
     { label: "SERVICES", path: "/services", sectionId: null },
     { label: "CONTACT", path: "/contact", sectionId: "contact" },
   ];
@@ -70,11 +81,10 @@ const Header = () => {
     <>
       <header
         className={`fixed top-0 left-0 w-full z-50 border-b transition-all duration-300
-        ${
-          isScrolled
+        ${isScrolled
             ? "bg-white/90 backdrop-blur-xl shadow-md"
             : "bg-white shadow-sm"
-        }`}
+          }`}
       >
         <div className="mx-auto flex h-[88px] max-w-7xl items-center justify-between px-4 sm:px-6">
 
@@ -116,8 +126,13 @@ const Header = () => {
               {navLinks.map((item) => (
                 <div key={item.label} className="group relative">
                   {item.subLinks ? (
-                    <div className="flex items-center gap-1 cursor-pointer pb-1 transition hover:text-[#F04E30]">
-                      {item.label} <FiChevronDown />
+                    <div className="group relative">
+                      <div
+                        onClick={() => handleNavClick(item)}
+                        className="flex items-center gap-1 cursor-pointer pb-1 transition hover:text-[#F04E30]"
+                      >
+                        {item.label} <FiChevronDown />
+                      </div>
                       <div className="absolute top-full left-1/2 -mt-1 hidden w-48 -translate-x-1/2 pt-2 group-hover:block transition-all duration-300">
                         <div className="rounded-xl border border-slate-100 bg-white p-2 shadow-xl backdrop-blur-xl">
                           {item.subLinks.map((sub) => (
@@ -206,9 +221,12 @@ const Header = () => {
                 <div key={item.label}>
                   {item.subLinks ? (
                     <>
-                      <div className="px-3 py-2 text-slate-400 text-[10px] font-bold tracking-widest">
+                      <button
+                        onClick={() => handleNavClick(item)}
+                        className="w-full text-left px-3 py-2 text-slate-400 text-[10px] font-bold tracking-widest hover:text-[#F04E30]"
+                      >
                         {item.label}
-                      </div>
+                      </button>
                       <div className="ml-3 flex flex-col gap-1 border-l-2 border-slate-100">
                         {item.subLinks.map((sub) => (
                           <button

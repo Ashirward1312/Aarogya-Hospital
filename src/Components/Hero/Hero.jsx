@@ -1,10 +1,8 @@
-// src/components/HeroSection.jsx
 import React, { useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
 
-import home2 from "../images/home2_.webp";
-import home3 from "../images/home3_.webp";
-import home4 from "../images/a1.webp";
+import home2 from "../images/Hospital in shankar nagar.webp";
+import home3 from "../images/Best Hospital in Shankar nagar raipur.webp";
+import home4 from "../images/Best hospital in raipur.webp";
 
 const HERO_IMAGES = [
   `${import.meta.env.BASE_URL}home1.webp`,
@@ -19,6 +17,16 @@ const HeroSection = () => {
   const [incomingLoaded, setIncomingLoaded] = useState(false);
   const timerRef = useRef(null);
   const [heroReady, setHeroReady] = useState(false);
+
+  const [firstLoaded, setFirstLoaded] = useState(false);
+
+  // First image preload ASAP (component mount)
+  useEffect(() => {
+    const img = new Image();
+    img.src = HERO_IMAGES[0];
+    img.onload = () => setFirstLoaded(true);
+    img.onerror = () => setFirstLoaded(true);
+  }, []);
 
   useEffect(() => {
     const preload = () => {
@@ -79,14 +87,23 @@ const HeroSection = () => {
   return (
     <section id="home" className="relative min-h-[90vh] overflow-hidden bg-slate-950">
       <div className="absolute inset-0">
+        {/* Placeholder */}
+        {!firstLoaded && (
+          <div className="absolute inset-0">
+            <div className="absolute inset-0 bg-gradient-to-b from-slate-700 to-slate-950" />
+          </div>
+        )}
+
         <img
           src={HERO_IMAGES[currentIndex]}
           alt="Aarogya Hospital banner"
           className="absolute inset-0 h-full w-full object-cover"
           fetchPriority={currentIndex === 0 ? "high" : "low"}
-          decoding="async"
+          loading={currentIndex === 0 ? "eager" : "lazy"}
+          decoding={currentIndex === 0 ? "sync" : "async"}
           onLoad={() => {
             if (!heroReady) setHeroReady(true);
+            if (currentIndex === 0) setFirstLoaded(true);
           }}
         />
 
@@ -103,7 +120,8 @@ const HeroSection = () => {
           />
         )}
 
-        <div className="absolute inset-0 bg-black/60" />
+        {/* Overlay */}
+        <div className={`absolute inset-0 ${firstLoaded ? "bg-black/60" : "bg-black/20"}`} />
       </div>
 
       <div className="relative z-10 flex min-h-[90vh] items-center justify-center px-4">
@@ -120,15 +138,17 @@ const HeroSection = () => {
           </h1>
 
           <p className="mt-4 text-sm sm:text-base lg:text-lg leading-relaxed text-slate-300">
-            <Link
-              to="/"
+            Aarogya Hospital is a leading{" "}
+            <a
+              href="https://www.aarogyahospitalraipur.com/"
               className="font-semibold text-orange-300 underline decoration-orange-300/40 underline-offset-4 hover:text-orange-200"
             >
-              Aarogya Hospital
-            </Link>{" "}
-            We deliver trusted healthcare in Raipur through advanced treatments,
-            experienced doctors, and modern medical facilities—because your
-            health, safety, and recovery are always our top priorities.
+              super speciality hospital in Raipur, Chhattisgarh,
+            </a>{" "}
+            offering advanced treatments, experienced doctors, and modern medical
+            facilities. We provide trusted, patient-focused healthcare with a
+            strong commitment to safety, accurate diagnosis, and faster
+            recovery—making us one of the best hospitals in Raipur.
           </p>
         </div>
       </div>

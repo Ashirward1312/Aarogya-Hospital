@@ -16,7 +16,6 @@ import WhatsAppIcon from "./Components/Whatsapp/Whatsapp.jsx";
 import FloatingSocials from "./Components/Whatsapp/Floating.jsx";
 import Special from "./Components/Special/Special.jsx";
 import Quick from "./Components/Quick/Quick.jsx";
-import Cradiac from "./Components/Quick/Cradiac.jsx";
 import AppointmentPage from "./Components/Book/Book.jsx";
 import Get from "./Components/Get/Get.jsx";
 import Second from "./Components/Get/Second.jsx";
@@ -28,6 +27,9 @@ import AboutCardiologyPage from "./Components/Quick/Heart.jsx";
 import AboutSurgeryPage from "./Components/Quick/Surgen.jsx";
 import Gynaecology from "./Components/Quick/Gyna.jsx";
 import Orthopedics from "./Components/Quick/Ortho.jsx";
+import Department from "./Components/Department/Department.jsx";
+import NotFound from "./Components/NotFound/NotFound.jsx";
+
 
 /* -------- ScrollToTop -------- */
 
@@ -48,14 +50,14 @@ const HomePage = () => {
     <>
       <HeroSection />
       <Quick />
-      <Special />
-      <WhatsAppIcon />
-      <FloatingSocials />
-      <Equip />
-      <DirectorsSection />
-      <Cradiac />
-      <Mission />
+
       <About />
+      <Special />
+      <DirectorsSection />
+
+
+      <Equip />
+      <Mission />
       <Faq />
     </>
   );
@@ -75,11 +77,16 @@ function App() {
 
           {/* Home */}
           <Route path="/" element={<HomePage />} />
-          {/* Doctors */}
+
+           {/* Doctors */}
           <Route path="/doctors" element={<DepartmentsSection />} />
 
           {/* Services */}
           <Route path="/services" element={<Services />} />
+
+          {/* Departments */}
+          <Route path="/departments" element={<Department />} />
+
 
           {/* Appointment */}
           <Route path="/appointment" element={<AppointmentPage />} />
@@ -106,13 +113,19 @@ function App() {
           <Route path="/radiology" element={<Radiology />} />
 
           {/* Heart Department */}
-          <Route path="/services/cardiologist" element={<AboutCardiologyPage />} />
-          <Route path="/services/general-surgery" element={<AboutSurgeryPage />} />
-          <Route path="/services/gynaecology" element={<Gynaecology />} />
-          <Route path="/services/orthopedics" element={<Orthopedics />} />
+          <Route path="/departments/best-cardiology-and-heart-hospital-in-raipur" element={<AboutCardiologyPage />} />
+          <Route path="/departments/general-laparoscopy-surgery-hospital-in-raipur" element={<AboutSurgeryPage />} />
+          <Route path="/departments/gynaecology-hospital-in-raipur" element={<Gynaecology />} />
+          <Route path="/departments/orthopedics-hospital-in-raipur" element={<Orthopedics />} />
+
+          {/* 404 Catch-all */}
+          <Route path="*" element={<NotFound />} />
+
         </Routes>
       </ScrollToTop>
 
+      <WhatsAppIcon />
+      <FloatingSocials />
       <Footer />
     </div>
   );

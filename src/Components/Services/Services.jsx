@@ -139,8 +139,7 @@ const ServicesSection = () => {
               "Acute Heart Attack Stabilization",
             ]}
             color="rose"
-            showButton={true}
-            to="/services/cardiologist"
+            showButton={false}
           />
 
           <ServiceCard
@@ -154,8 +153,7 @@ const ServicesSection = () => {
               "Trauma Management",
             ]}
             color="indigo"
-            showButton={true}
-            to="/services/general-surgery"
+            showButton={false}
           />
 
           <ServiceCard
@@ -169,8 +167,7 @@ const ServicesSection = () => {
               "Infertility Counselling",
             ]}
             color="purple"
-            showButton={true}
-            to="/services/gynaecology"
+            showButton={false}
           />
 
           <ServiceCard
@@ -184,8 +181,7 @@ const ServicesSection = () => {
               "Sports Injury Management",
             ]}
             color="blue"
-            showButton={true}
-            to="/services/orthopedics"
+            showButton={false}
           />
 
           {/* ───── Remaining cards (shifted content down) ───── */}

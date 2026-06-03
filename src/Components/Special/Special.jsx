@@ -236,8 +236,7 @@ const DepartmentGrid = () => {
           </h1>
           <div className="mx-auto mt-3 h-[2px] w-24 rounded-full bg-slate-300" />
           <p className="mt-4 text-sm md:text-base text-slate-600 max-w-2xl mx-auto">
-            Multi-disciplinary hospital services designed to provide complete care – from early diagnosis to advanced treatment and rehabilitation.
-          </p>
+Super speciality care with end-to-end treatment support—from early diagnosis and advanced procedures to rehabilitation and recovery          </p>
           <div className="mt-5 flex flex-wrap items-center justify-center gap-2">
             <button
               type="button"

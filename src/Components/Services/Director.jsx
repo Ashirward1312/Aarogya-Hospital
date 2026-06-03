@@ -1,7 +1,7 @@
 import React from "react";
-import DrRishiImage from "../images/drrishi.webp";
-import DrPritiImage from "../images/drpriti.webp";
-import DrChiragImage from "../images/drchirag.webp";
+import DrRishiImage from "../images/General Surgeon in Raipur.webp";
+import DrPritiImage from "../images/Gynecologist in Raipur.webp";
+import DrChiragImage from "../images/Cardiologist in Raipur.webp";
 
 const leaders = [
   {
@@ -40,26 +40,25 @@ const leaders = [
     quote:
       "Every woman deserves respectful, safe and scientifically sound healthcare.",
   },
-  {
-    name: "Dr. Chirag Agrawal",
-    designation: "Interventional Cardiologist",
-    department: "Cardiology",
-    qualification: "MBBS, MD (Medicine), DM Cardiology",
-    council: "CGMC",
-    regNo: "—",
-    image: DrChiragImage,
-    summary:
-      "Dr. Chirag Agrawal is a highly accomplished Interventional Cardiologist with strong academic excellence and extensive clinical experience, focused on safe and personalised heart care.",
-    points: [
-      "MBBS Gold Medalist (9 distinctions).",
-      "MD (Medicine) Gold Medal.",
-      "DM Cardiology (VMMC & Safdarjung Hospital, Delhi).",
-      "6+ years experience in interventional cardiology.",
-    ],
-    quote:
-      "Patient education, early diagnosis and ethical care lead to better long‑term heart health.",
-  },
 ];
+
+const cardiologist = {
+  name: "Dr. Chirag Agrawal",
+  designation: "Interventional Cardiologist",
+  department: "Cardiology",
+  qualification: "MBBS (9 Distinctions, Gold Medalist), MD (Medicine, Gold Medalist), DM (Cardiology)",
+  image: DrChiragImage,
+  summary:
+    "Dr. Chirag Agrawal is a highly accomplished Interventional Cardiologist in Raipur known for his academic excellence and advanced cardiac care expertise.",
+  points: [
+    "Completed DM Cardiology from VMMC & Safdarjung Hospital, Delhi.",
+    "6+ years of clinical experience in advanced cardiac care.",
+    "Expertise in heart attack, hypertension, and coronary artery disease.",
+    "Focus on patient education and personalized treatment plans.",
+  ],
+  quote:
+    "Empowering patients through education and personalized care is key to long-term heart health and wellness.",
+};
 
 function LeaderCard({ d }) {
   return (
@@ -100,7 +99,7 @@ function LeaderCard({ d }) {
               {d.qualification}
             </p>
 
-            {d.regNo !== "—" && (
+            {d.regNo && d.regNo !== "—" && (
               <div className="mt-2 flex items-center justify-center gap-2 text-[11px] text-slate-400">
                 <span>{d.council}</span>
                 <span className="h-1 w-1 rounded-full bg-slate-300" />
@@ -179,10 +178,25 @@ const DirectorsSection = () => {
         </div>
 
         {/* Cards Grid */}
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3 xl:gap-10">
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-2 max-w-4xl mx-auto xl:gap-10">
           {leaders.map((d) => (
             <LeaderCard key={d.name} d={d} />
           ))}
+        </div>
+
+        {/* Interventional Cardiologist Section */}
+        <div className="mt-20 lg:mt-24">
+          <div className="mx-auto mb-10 flex justify-center">
+            <div className="inline-block rounded-2xl border border-red-100 bg-gradient-to-r from-red-50/30 via-white to-red-50/30 px-6 py-2.5 shadow-sm sm:px-8 sm:py-3">
+              <h2 className="text-2xl font-black uppercase tracking-wider text-slate-900 sm:text-3xl">
+                Interventional <span className="text-[#F04E30]">Cardiologist</span>
+              </h2>
+            </div>
+          </div>
+
+          <div className="max-w-md mx-auto">
+            <LeaderCard d={cardiologist} />
+          </div>
         </div>
       </div>
     </section>

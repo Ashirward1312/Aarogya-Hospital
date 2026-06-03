@@ -22,7 +22,6 @@ const Footer = () => {
 
   // WhatsApp (wa.me)
   const WHATSAPP_1 = "919827198000"; // +91 98271 98000
-  const WHATSAPP_2 = "918120012121"; // +91 81200 12121
 
   const handleScrollToSection = (sectionId) => {
     const scroll = () => {
@@ -82,16 +81,14 @@ const Footer = () => {
 
       {/* Main */}
       <div className="mx-auto max-w-7xl px-6 py-10">
-        <div className="grid gap-10 md:grid-cols-3">
+        <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
           {/* About + Social */}
           <div>
             <div className="text-sm font-bold text-slate-900">
               Aarogya Hospital
             </div>
             <p className="mt-2 text-xs leading-relaxed text-slate-600">
-              A super speciality hospital in Shankar Nagar, Raipur, providing
-              advanced, ethical and patient-focused care with experienced
-              consultants and modern facilities.
+              A super speciality hospital in Raipur, providing advanced, ethical and patient-focused care with modern facilities.
             </p>
 
             <div className="mt-4">
@@ -150,20 +147,62 @@ const Footer = () => {
 
               <li>
                 <Link
-                  to="/services"
-                  className="transition hover:text-[#F04E30]"
-                >
-                  Services
-                </Link>
-              </li>
-
-              <li>
-                <Link
                   to="/appointment"
                   className="transition hover:text-[#F04E30]"
                 >
                   Book Appointment
                 </Link>
+              </li>
+
+              <li>
+                <Link
+                  to="/contact"
+                  className="transition hover:text-[#F04E30]"
+                >
+                  Contact Us
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Our Services */}
+          <div>
+            <div className="text-sm font-bold text-slate-900">Our Departments</div>
+            <ul className="mt-3 space-y-2 text-xs text-slate-600">
+              <li>
+                <Link
+                  to="/departments/best-cardiology-and-heart-hospital-in-raipur"
+                  className="transition hover:text-[#F04E30]"
+                >
+                   Best Cardiology Hospital in Raipur
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/departments/general-laparoscopy-surgery-hospital-in-raipur"
+                  className="transition hover:text-[#F04E30]"
+                >
+                 Best General Surgery & Laparoscopy Hospital in Raipur
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/departments/gynaecology-hospital-in-raipur"
+                  className="transition hover:text-[#F04E30]"
+                >
+                       Best  Gynaecology Hospital in Raipur
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/departments/orthopedics-hospital-in-raipur"
+                  className="transition hover:text-[#F04E30]"
+                >
+                  Best Orthopedics Hospital in Raipur
+                </Link>
+              </li>
+              <li>
+                
               </li>
             </ul>
           </div>
@@ -212,15 +251,6 @@ const Footer = () => {
                   className="font-semibold text-slate-900 transition hover:text-[#F04E30]"
                 >
                   98271 98000
-                </a>
-                {" , "}
-                <a
-                  href={`https://wa.me/${WHATSAPP_2}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="font-semibold text-slate-900 transition hover:text-[#F04E30]"
-                >
-                  81200 12121
                 </a>
               </Row>
 

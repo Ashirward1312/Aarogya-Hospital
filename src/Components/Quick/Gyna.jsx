@@ -24,9 +24,9 @@ import {
 
 import { MdOutlineVerifiedUser, MdLocalHospital } from "react-icons/md";
 
-import DoctorImg from "../images/dr2.png";
-import HeroImg from "../images/g1.jpg";
-import ClinicImg from "../images/g22.jpg";
+import DoctorImg from "../images/Gynecologist in Raipur.webp";
+import HeroImg from "../images/Gynecology Hospital in Raipur.webp";
+import ClinicImg from "../images/Gynecology Hospital.webp";
 
 /* ─────────────────────── Reusable UI ─────────────────────── */
 
@@ -37,6 +37,8 @@ function Container({ children, className = "" }) {
     </div>
   );
 }
+
+
 
 function SectionTag({ children, dark = false }) {
   return (
@@ -66,12 +68,13 @@ function SectionHeader({
   desc,
   center = false,
   dark = false,
+  tittle,
+  subtitle,
 }) {
+  const displaySubtitle = subtitle || tittle;
   return (
     <div
-      className={`flex flex-col gap-3 ${
-        center ? "items-center text-center" : ""
-      }`}
+      className={`flex flex-col gap-3 ${center ? "items-center text-center" : ""}`}
     >
       <SectionTag dark={dark}>{tag}</SectionTag>
 
@@ -95,6 +98,12 @@ function SectionHeader({
           </span>
         ) : null}
       </h2>
+
+      {displaySubtitle ? (
+        <p className={`text-base sm:text-lg font-bold tracking-tight -mt-1 ${dark ? "text-rose-300" : "text-rose-600"}`}>
+          {displaySubtitle}
+        </p>
+      ) : null}
 
       {desc ? (
         <p
@@ -150,7 +159,8 @@ export default function GynecologyLandingPage() {
     specialty: "Gynecologist",
     council: "CGMC",
     regNo: "142/2004",
-    qualifications: ["MBBS", "MD", "MICCO", "FMAS", "FIMCH"],
+    // ✅ will be shown ONLY ONCE (Qualifications section)
+    qualifications: ["Best Gynecologist in Raipur"],
   };
 
   const services = useMemo(
@@ -316,98 +326,111 @@ export default function GynecologyLandingPage() {
     []
   );
 
+  const aboutCards = useMemo(
+    () => [
+      {
+        title: "Privacy & Comfort",
+        desc: "A supportive consultation environment with dignity and respect.",
+        icon: FaShieldAlt,
+      },
+      {
+        title: "Clear Counselling",
+        desc: "Simple explanations and realistic expectations for every plan.",
+        icon: FaNotesMedical,
+      },
+      {
+        title: "Step-wise Care",
+        desc: "Investigations only when needed; plan built thoughtfully.",
+        icon: FaMicroscope,
+      },
+      {
+        title: "Follow-up Support",
+        desc: "Guidance and monitoring to ensure steady progress.",
+        icon: FaHandHoldingMedical,
+      },
+    ],
+    []
+  );
+
   return (
     <div className="min-h-screen bg-white font-sans text-slate-900 antialiased scroll-smooth">
       <Helmet>
-        <title>{doctor.name} | Gynecologist</title>
+        <title>Best Gynaecology Hospital in Raipur (C.G)| Aarogya Hospital Raipur</title>
         <meta
           name="description"
-          content={`${doctor.name} (${doctor.qualifications.join(
-            ", "
-          )}) — Gynecologist. Council: ${doctor.council}, Registration: ${
-            doctor.regNo
-          }.`}
+          content="Aarogya Hospital is best gynaecology hospital in Raipur (C.G), provides expert care for pregnancy, women’s health, fertility, and advanced treatments with experienced doctors."
         />
+        <meta property="og:title" content="Best Gynaecology Hospital in Raipur (C.G)| Aarogya Hospital Raipur" />
+        <meta property="og:type" content="website" />
+        <meta property="og:image" content="https://www.aarogyahospitalraipur.com/logo.png" />
+        <meta property="og:site_name" content="Aarogya Hospital Raipur" />
+        <meta property="og:description" content="Aarogya Hospital is best gynaecology hospital in Raipur (C.G), provides expert care for pregnancy, women’s health, fertility, and advanced treatments with experienced doctors." />
+        <meta property="og:url" content="https://www.aarogyahospitalraipur.com/departments/gynaecology-hospital-in-raipur" />
+        <meta property="og:locale" content="en_IN" />
+        <link rel="canonical" href="https://www.aarogyahospitalraipur.com/departments/gynaecology-hospital-in-raipur" />
+        <link rel="preload" as="image" href={HeroImg} fetchPriority="high" />
       </Helmet>
 
-      {/* ══════════════════════════════════════════
-          HERO (FIX: image height now content-friendly via aspect ratio)
-      ══════════════════════════════════════════ */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-[#1B0B1F] via-[#15112B] to-slate-950">
-        <div className="pointer-events-none absolute inset-0 overflow-hidden">
-          <div className="absolute -top-44 -right-40 h-[520px] w-[520px] rounded-full bg-fuchsia-500/10 blur-3xl" />
-          <div className="absolute -bottom-44 -left-44 h-[520px] w-[520px] rounded-full bg-rose-500/10 blur-3xl" />
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[260px] w-[680px] rounded-full bg-pink-400/5 blur-2xl" />
-        </div>
+      {/* HERO */}
+      <section
+        className="relative overflow-hidden bg-slate-950"
+        style={{
+          background: `
+            radial-gradient(circle at top right, rgba(236, 72, 153, 0.1), transparent 400px),
+            radial-gradient(circle at bottom left, rgba(244, 63, 94, 0.1), transparent 400px),
+            linear-gradient(to bottom right, #1B0B1F, #15112B, #020617)
+          `,
+        }}
+      >
 
         <Container className="relative z-10 py-16 sm:py-20 lg:py-24">
-          {/* BACK BUTTON */}
-          <div className="mb-8">
-            <button
-              onClick={() => navigate(-1)}
-              className="inline-flex items-center justify-center gap-2 bg-white/10 backdrop-blur-md border border-white/20 text-white px-4 py-2 rounded-full shadow-lg hover:-translate-y-1 hover:shadow-xl hover:bg-white/20 transition-all duration-300 font-semibold text-sm"
-            >
-              <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-              </svg>
-              Back
-            </button>
-          </div>
+
+
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
             {/* Left */}
             <div className="flex flex-col gap-6">
               <div className="flex flex-wrap gap-2">
-                <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-rose-500/15 border border-rose-400/25 text-rose-200 text-[0.68rem] font-semibold tracking-[0.2em] uppercase">
-                  <span className="h-1.5 w-1.5 rounded-full bg-rose-300" />
-                  COUNCIL: {doctor.council} • REG. NO: {doctor.regNo}
-                </span>
-
-                <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/8 border border-white/12 text-white/70 text-[0.68rem] font-semibold tracking-[0.2em] uppercase">
+                <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-rose-500/10 border border-rose-500/20 text-rose-200 text-[0.68rem] font-semibold tracking-[0.2em] uppercase">
                   <MdOutlineVerifiedUser className="text-rose-300" />
                   Verified Doctor
                 </span>
               </div>
 
-              <h1 className="text-4xl sm:text-5xl xl:text-[3.4rem] font-extrabold text-white leading-[1.08] tracking-tight">
-                Premium
-                <br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-rose-200 via-pink-200 to-fuchsia-300">
-                  Gynecology Care
-                </span>
-                <br />
-                with Comfort & Clarity
-              </h1>
+              <h1 className="text-4xl sm:text-5xl xl:text-[3.2rem] font-extrabold text-white leading-[1.1] tracking-tight">
+  <span className="text-transparent bg-clip-text bg-gradient-to-r from-rose-200 to-rose-400">
+    Best Gynecology Hospital in Raipur
+  </span>
+</h1>
 
-              <div className="inline-flex items-center gap-4 bg-white/6 border border-white/10 rounded-2xl px-4 py-3 w-fit backdrop-blur-sm">
+              <div className="flex flex-col gap-6">
+                <p className="text-white/80 text-sm sm:text-base leading-relaxed max-w-2xl">
+                  Get premium Gynecology & Obstetrics care with compassionate support and complete guidance at Aarogya Hospital, one of the <a href="/departments/gynecology-hospital-in-raipur" className="text-rose-300 font-semibold hover:underline">best gynecology hospitals in Raipur (C.G)</a>.
+                </p>
+                <p className="text-white/70 text-sm sm:text-[0.95rem] leading-relaxed max-w-2xl">
+                  Led by experienced gynecologist Dr. Priti Agrawal, our department provides evidence-based care with a strong focus on patient safety, absolute privacy, and structured counselling. From consultation to post-delivery care, we ensure you feel informed, confident, and completely supported throughout your health journey.
+                </p>
+              </div>
+
+              <div className="inline-flex items-center gap-4 bg-white/5 border border-white/10 rounded-2xl px-4 py-3 w-fit shadow-lg shadow-black/20">
                 <img
                   src={DoctorImg}
                   alt={doctor.name}
+                  width="56"
+                  height="56"
                   className="h-14 w-14 rounded-xl object-cover object-top ring-2 ring-rose-400/30 flex-shrink-0"
-                  loading="eager"
+                  fetchPriority="high"
                 />
                 <div>
                   <p className="text-white font-semibold text-sm">{doctor.name}</p>
-                  <p className="text-rose-200 text-xs font-semibold mt-0.5">
-                    {doctor.specialty}
-                  </p>
-                  <div className="flex flex-wrap items-center gap-1.5 mt-1">
+                  <div className="flex flex-wrap items-center gap-1.5 mt-1.5">
                     {doctor.qualifications.map((q) => (
-                      <span
-                        key={q}
-                        className="text-white/50 text-[0.62rem] font-semibold"
-                      >
+                      <span key={q} className="text-white/50 text-[0.62rem] font-semibold">
                         {q}
                       </span>
                     ))}
                   </div>
                 </div>
               </div>
-
-              <p className="text-white/65 text-sm sm:text-base leading-relaxed max-w-lg">
-                A respectful, privacy-conscious consultation experience with
-                evidence-based guidance, practical next steps, and structured
-                follow-up care.
-              </p>
 
               {/* CTA only here */}
               <div className="flex flex-wrap gap-3">
@@ -421,42 +444,24 @@ export default function GynecologyLandingPage() {
                   Call Now
                 </SecondaryButton>
               </div>
-
-              <div className="grid grid-cols-3 gap-3 pt-2">
-                {[
-                  { label: "Council", value: doctor.council },
-                  { label: "Reg. No.", value: doctor.regNo },
-                  { label: "Focus", value: "Privacy-first" },
-                ].map((s) => (
-                  <div
-                    key={s.label}
-                    className="rounded-2xl border border-white/8 bg-white/5 px-4 py-4 text-center backdrop-blur-sm"
-                  >
-                    <p className="text-white/40 text-[0.62rem] font-semibold tracking-[0.18em] uppercase">
-                      {s.label}
-                    </p>
-                    <p className="text-white text-xs font-bold mt-1">
-                      {s.value}
-                    </p>
-                  </div>
-                ))}
-              </div>
             </div>
 
-            {/* Right (FIX: no fixed height; uses aspect ratio) */}
+            {/* Right */}
             <div className="relative">
               <div className="relative rounded-3xl overflow-hidden border border-white/10 shadow-2xl shadow-black/40">
                 <div className="relative w-full aspect-[16/11] sm:aspect-[16/10] lg:aspect-[4/3]">
                   <img
                     src={HeroImg}
                     alt="Gynecology clinic"
+                    width="800"
+                    height="600"
                     className="absolute inset-0 w-full h-full object-cover"
-                    loading="eager"
+                    fetchPriority="high"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-slate-950/20 to-transparent" />
 
                   <div className="absolute bottom-0 left-0 right-0 p-5">
-                    <div className="rounded-2xl border border-white/15 bg-white/8 p-4 backdrop-blur-md">
+                    <div className="rounded-2xl border border-white/15 bg-slate-900/80 p-4">
                       <p className="text-white font-semibold text-sm">
                         Comfort-led Clinical Experience
                       </p>
@@ -481,29 +486,13 @@ export default function GynecologyLandingPage() {
                 </div>
               </div>
 
-              <div className="absolute -top-4 -right-4 bg-white rounded-2xl shadow-xl border border-slate-100 px-4 py-3 hidden sm:block">
-                <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 rounded-xl bg-rose-50 border border-rose-100 flex items-center justify-center">
-                    <MdOutlineVerifiedUser className="text-rose-600 text-base" />
-                  </div>
-                  <div>
-                    <p className="text-slate-900 font-bold text-xs">
-                      CGMC Registered
-                    </p>
-                    <p className="text-slate-500 text-[0.65rem]">
-                      Reg. No. {doctor.regNo}
-                    </p>
-                  </div>
-                </div>
-              </div>
+              {/* (No floating council/reg card) */}
             </div>
           </div>
         </Container>
       </section>
 
-      {/* ══════════════════════════════════════════
-          ABOUT (unchanged)
-      ══════════════════════════════════════════ */}
+      {/* ABOUT */}
       <section id="about" className="py-20 bg-slate-50">
         <Container>
           <div className="grid lg:grid-cols-2 gap-14 lg:gap-20 items-center">
@@ -512,26 +501,20 @@ export default function GynecologyLandingPage() {
                 <img
                   src={DoctorImg}
                   alt={doctor.name}
+                  width="600"
+                  height="520"
                   className="w-full h-[480px] sm:h-[520px] object-cover object-top"
                   loading="lazy"
                 />
               </div>
 
-              <div className="absolute top-5 left-5 bg-white rounded-2xl shadow-lg border border-slate-100 px-4 py-3">
-                <p className="text-rose-700 text-[0.65rem] font-semibold uppercase tracking-[0.2em]">
-                  Medical Council
-                </p>
-                <p className="text-slate-900 font-bold text-sm mt-0.5">
-                  {doctor.council} • {doctor.regNo}
-                </p>
-              </div>
-
-              <div className="absolute -bottom-5 -right-5 w-28 h-28 rounded-2xl bg-gradient-to-br from-rose-500 to-fuchsia-600 shadow-lg shadow-fuchsia-500/25 flex flex-col items-center justify-center">
+              {/* ✅ removed MD badge (degree) so degrees appear only once */}
+              <div className="absolute -bottom-5 -right-5 w-24 h-24 rounded-2xl bg-gradient-to-br from-rose-500 to-fuchsia-600 shadow-lg shadow-rose-500/30 flex flex-col items-center justify-center">
                 <span className="text-white font-extrabold text-lg leading-none">
                   MD
                 </span>
                 <span className="text-white/85 text-[0.65rem] font-semibold tracking-wide mt-0.5">
-                  Gynecology
+                  Gynaecology
                 </span>
               </div>
             </div>
@@ -539,9 +522,13 @@ export default function GynecologyLandingPage() {
             <div className="flex flex-col gap-6">
               <SectionHeader
                 tag="About the Doctor"
-                title="Meet"
                 highlight={doctor.name}
-                desc="A Gynecologist dedicated to providing respectful, evidence-based care with clear counselling and a privacy-first consultation experience."
+                tittle={
+                  <a href="/departments/gynecology-hospital-in-raipur" className="hover:underline">
+                    Best Gynecologist in Raipur
+                  </a>
+                }
+                desc="Respectful, evidence-based care with clear counselling and a privacy-first consultation experience."
               />
 
               <p className="text-slate-600 text-sm leading-relaxed">
@@ -550,59 +537,32 @@ export default function GynecologyLandingPage() {
                 without stress.
               </p>
 
-              <div className="flex flex-wrap gap-2">
-                {doctor.qualifications.map((q) => (
-                  <span
-                    key={q}
-                    className="bg-white border border-slate-200 text-slate-800 px-4 py-1.5 rounded-full text-xs font-semibold"
-                  >
-                    {q}
-                  </span>
-                ))}
-              </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {[
-                  {
-                    title: "Privacy & Comfort",
-                    desc: "A supportive consultation environment with dignity and respect.",
-                    icon: "🕊️",
-                  },
-                  {
-                    title: "Clear Counselling",
-                    desc: "Simple explanations and realistic expectations for every plan.",
-                    icon: "🗣️",
-                  },
-                  {
-                    title: "Step-wise Care",
-                    desc: "Investigations only when needed; plan built thoughtfully.",
-                    icon: "🧭",
-                  },
-                  {
-                    title: "Follow-up Support",
-                    desc: "Guidance and monitoring to ensure steady progress.",
-                    icon: "📌",
-                  },
-                ].map((card) => (
-                  <div
-                    key={card.title}
-                    className="rounded-2xl bg-white border border-slate-200/80 px-5 py-5 shadow-sm hover:shadow-md hover:border-rose-200 transition-all duration-200 flex flex-col gap-3"
-                  >
-                    <div className="w-10 h-10 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-center text-xl">
-                      {card.icon}
+                {aboutCards.map((card) => {
+                  const Icon = card.icon;
+                  return (
+                    <div
+                      key={card.title}
+                      className="rounded-2xl bg-white border border-slate-200/80 px-5 py-5 shadow-sm hover:shadow-md hover:border-rose-200 transition-all duration-200 flex flex-col gap-3"
+                    >
+                      <div className="w-10 h-10 rounded-xl bg-rose-50 border border-rose-100 flex items-center justify-center text-rose-600">
+                        <Icon className="text-lg" />
+                      </div>
+                      <div>
+                        <h3 className="text-slate-900 font-semibold text-sm">
+                          {card.title}
+                        </h3>
+                        <p className="text-slate-500 text-xs leading-relaxed mt-1.5">
+                          {card.desc}
+                        </p>
+                      </div>
                     </div>
-                    <div>
-                      <h3 className="text-slate-900 font-semibold text-sm">
-                        {card.title}
-                      </h3>
-                      <p className="text-slate-500 text-xs leading-relaxed mt-1.5">
-                        {card.desc}
-                      </p>
-                    </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
 
+              {/* ✅ Council/Reg ONLY ONE PLACE (here) */}
               <div className="rounded-2xl bg-gradient-to-r from-rose-50 to-fuchsia-50 border border-rose-100 px-5 py-4">
                 <div className="flex items-center justify-between gap-4">
                   <div>
@@ -614,7 +574,8 @@ export default function GynecologyLandingPage() {
                       <span className="font-bold text-slate-800">
                         {doctor.council}
                       </span>
-                      {" · "}Reg. No.:{" "}
+                      {" · "}
+                      Reg. No.:{" "}
                       <span className="font-bold text-slate-800">
                         {doctor.regNo}
                       </span>
@@ -633,9 +594,7 @@ export default function GynecologyLandingPage() {
         </Container>
       </section>
 
-      {/* ══════════════════════════════════════════
-          SERVICES
-      ══════════════════════════════════════════ */}
+      {/* SERVICES */}
       <section id="services" className="py-20 bg-white">
         <Container>
           <SectionHeader
@@ -679,12 +638,7 @@ export default function GynecologyLandingPage() {
         </Container>
       </section>
 
-      {/* ══════════════════════════════════════════
-          PROCESS (FIX: image & right card height now "content-based")
-          - removed items-stretch
-          - removed fixed/min heights
-          - image uses aspect ratio instead
-      ══════════════════════════════════════════ */}
+      {/* PROCESS */}
       <section id="process" className="py-20 bg-slate-50">
         <Container>
           <SectionHeader
@@ -696,19 +650,20 @@ export default function GynecologyLandingPage() {
           />
 
           <div className="mt-12 grid lg:grid-cols-2 gap-10 items-start">
-            {/* Left image (content-friendly height) */}
             <div className="relative rounded-3xl overflow-hidden border border-slate-200 shadow-xl shadow-slate-200/50">
               <div className="relative w-full aspect-[16/11] sm:aspect-[16/10] lg:aspect-[4/3]">
                 <img
                   src={ClinicImg}
                   alt="Clinic environment"
+                  width="800"
+                  height="600"
                   className="absolute inset-0 w-full h-full object-cover"
                   loading="lazy"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-900/70 via-slate-900/15 to-transparent" />
 
                 <div className="absolute bottom-0 left-0 right-0 p-6">
-                  <div className="rounded-2xl border border-white/15 bg-white/8 p-4 backdrop-blur-md">
+                  <div className="rounded-2xl border border-white/15 bg-slate-900/60 p-4">
                     <p className="text-white font-semibold text-sm">
                       Comfort + Clinical Clarity
                     </p>
@@ -721,7 +676,6 @@ export default function GynecologyLandingPage() {
               </div>
             </div>
 
-            {/* Right steps (no forced height => no blank space) */}
             <div className="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden">
               <div className="divide-y divide-slate-100">
                 {process.map((step, idx) => {
@@ -765,9 +719,7 @@ export default function GynecologyLandingPage() {
         </Container>
       </section>
 
-      {/* ══════════════════════════════════════════
-          WHY CHOOSE
-      ══════════════════════════════════════════ */}
+      {/* WHY CHOOSE */}
       <section id="why" className="py-20 bg-white">
         <Container>
           <SectionHeader
@@ -805,23 +757,26 @@ export default function GynecologyLandingPage() {
         </Container>
       </section>
 
-      {/* ══════════════════════════════════════════
-          TRUST / QUALIFICATIONS (No CTA)
-      ══════════════════════════════════════════ */}
-      <section className="py-20 bg-gradient-to-br from-[#1B0B1F] via-[#15112B] to-slate-950 relative overflow-hidden">
-        <div className="pointer-events-none absolute inset-0">
-          <div className="absolute -top-32 -right-32 h-[420px] w-[420px] rounded-full bg-fuchsia-500/8 blur-3xl" />
-          <div className="absolute -bottom-32 -left-32 h-[420px] w-[420px] rounded-full bg-rose-500/8 blur-3xl" />
-        </div>
+      {/* ✅ QUALIFICATIONS (Degrees shown ONLY HERE) */}
+      <section
+        className="py-20 bg-slate-950 relative overflow-hidden"
+        style={{
+          background: `
+            radial-gradient(circle at 100% 0%, rgba(217, 70, 239, 0.08), transparent 400px),
+            radial-gradient(circle at 0% 100%, rgba(244, 63, 94, 0.08), transparent 400px),
+            linear-gradient(to bottom right, #1B0B1F, #15112B, #020617)
+          `,
+        }}
+      >
 
         <Container className="relative z-10">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div className="flex flex-col gap-6">
               <SectionHeader
                 tag="Qualifications"
-                title="Qualifications &"
-                highlight="Medical Registration"
-                desc="Credentials presented clearly—so you know who is caring for you and what standards guide your care."
+                title="Professional"
+                highlight="Qualifications"
+                desc="Degrees and credentials shown clearly in one place."
                 dark
               />
 
@@ -835,22 +790,6 @@ export default function GynecologyLandingPage() {
                     {q}
                   </span>
                 ))}
-              </div>
-
-              <div className="flex items-center justify-between bg-white/6 border border-white/10 rounded-2xl px-5 py-4 backdrop-blur-sm">
-                <div>
-                  <p className="text-white/40 text-[0.65rem] uppercase tracking-[0.2em] font-semibold">
-                    Medical Council
-                  </p>
-                  <p className="text-white/80 text-sm mt-1">
-                    {doctor.council} · Reg. No.{" "}
-                    <span className="text-white font-bold">{doctor.regNo}</span>
-                  </p>
-                </div>
-                <div className="flex items-center gap-2 bg-rose-500 text-white px-4 py-2 rounded-xl text-xs font-bold">
-                  <MdOutlineVerifiedUser />
-                  Verified
-                </div>
               </div>
 
               <div className="flex items-center gap-1">
@@ -904,95 +843,71 @@ export default function GynecologyLandingPage() {
         </Container>
       </section>
 
-      {/* ══════════════════════════════════════════
-          FINAL CTA (Only CTA here)
-      ══════════════════════════════════════════ */}
-      <section id="cta" className="py-20 bg-slate-50">
+      {/* ✅ SIMPLE BOOKING SECTION (No degrees, no doctor card) */}
+      <section id="cta" className="py-20 bg-white">
         <Container>
-          <div className="relative overflow-hidden rounded-3xl bg-white border border-slate-200 shadow-xl shadow-slate-200/50 p-8 sm:p-12">
-            <div className="pointer-events-none absolute top-0 right-0 w-64 h-64 rounded-full bg-rose-50 blur-3xl -translate-y-1/2 translate-x-1/2" />
-            <div className="pointer-events-none absolute bottom-0 left-0 w-48 h-48 rounded-full bg-fuchsia-50 blur-3xl translate-y-1/2 -translate-x-1/2" />
+          <div className="relative overflow-hidden rounded-3xl border border-slate-200 shadow-xl shadow-slate-200/50">
+            <div className="absolute inset-0 bg-gradient-to-br from-rose-50 via-white to-fuchsia-50" />
+            <div className="pointer-events-none absolute -top-24 -right-24 h-72 w-72 rounded-full bg-fuchsia-200/40 blur-3xl" />
+            <div className="pointer-events-none absolute -bottom-28 -left-28 h-80 w-80 rounded-full bg-rose-200/40 blur-3xl" />
 
-            <div className="relative grid lg:grid-cols-[1fr_auto] gap-10 items-center">
-              <div className="flex flex-col gap-5">
-                <SectionTag>Book Now</SectionTag>
+            <div className="relative p-8 sm:p-12">
+              <div className="grid lg:grid-cols-[1.2fr_0.8fr] gap-10 items-center">
+                <div className="flex flex-col gap-5">
+                  <SectionTag>Appointment</SectionTag>
 
-                <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 leading-tight tracking-tight">
-                  Book an Appointment with{" "}
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-rose-600 to-fuchsia-600">
-                    {doctor.name}
-                  </span>
-                </h2>
-
-                <p className="text-slate-500 text-sm sm:text-base leading-relaxed max-w-lg">
-                  Schedule a private consultation to discuss symptoms, reports,
-                  and the most suitable care plan—built around comfort, clarity,
-                  and follow-up support.
-                </p>
-
-                <div className="flex flex-wrap gap-3">
-                  <PrimaryButton href="/appointment">
-                    <FaCalendarCheck />
+                  <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 leading-tight tracking-tight">
                     Book Appointment
-                  </PrimaryButton>
+                    <span className="block text-transparent bg-clip-text bg-gradient-to-r from-rose-600 to-fuchsia-600">
+                      in 1 Minute
+                    </span>
+                  </h2>
 
-                  <SecondaryButton href={PHONE_HREF}>
-                    <FaPhoneAlt className="text-rose-600" />
-                    Call: {PHONE_NUMBER}
-                  </SecondaryButton>
-                </div>
+                  <p className="text-slate-600 text-sm sm:text-base leading-relaxed max-w-2xl">
+                    Book karne ke liye “Book Now” par click karein, ya urgent help
+                    ke liye call karein.
+                  </p>
 
-                <p className="text-slate-400 text-xs">
-                  Tip: Bring prior reports, current medicines, and last menstrual
-                  period (LMP) date if applicable.
-                </p>
-              </div>
+                  <div className="flex flex-wrap gap-3">
+                    <PrimaryButton href="/appointment">
+                      <FaCalendarCheck />
+                      Book Now
+                    </PrimaryButton>
 
-              <div className="bg-slate-50 border border-slate-200 rounded-2xl p-6 min-w-[240px] lg:min-w-[280px]">
-                <div className="flex items-center gap-3 pb-4 border-b border-slate-200">
-                  <img
-                    src={DoctorImg}
-                    alt={doctor.name}
-                    className="w-12 h-12 rounded-xl object-cover object-top border border-slate-200"
-                    loading="lazy"
-                  />
-                  <div>
-                    <p className="text-slate-900 font-semibold text-sm">
-                      {doctor.name}
-                    </p>
-                    <p className="text-rose-600 text-xs font-semibold">
-                      {doctor.specialty}
-                    </p>
+                    <SecondaryButton href={PHONE_HREF}>
+                      <FaPhoneAlt className="text-rose-600" />
+                      Call Now
+                    </SecondaryButton>
                   </div>
                 </div>
 
-                <div className="mt-4 flex flex-col gap-3">
-                  {[
-                    {
-                      label: "Qualification",
-                      value: doctor.qualifications.join(", "),
-                    },
-                    { label: "Medical Council", value: doctor.council },
-                    { label: "Registration Number", value: doctor.regNo },
-                    { label: "Consultation", value: "Private • Supportive • Clear" },
-                  ].map((row) => (
-                    <div key={row.label} className="flex items-start gap-2">
-                      <span className="mt-2 h-1.5 w-1.5 rounded-full bg-rose-500 flex-shrink-0" />
-                      <p className="text-slate-600 text-xs leading-relaxed">
-                        <span className="text-slate-400">{row.label}:</span>{" "}
-                        <span className="text-slate-800 font-semibold">
-                          {row.value}
-                        </span>
-                      </p>
-                    </div>
-                  ))}
-                </div>
+                <div className="rounded-2xl border border-slate-200 bg-white/70 backdrop-blur-md p-6 shadow-sm">
+                  <p className="text-slate-900 font-extrabold text-base">
+                    Quick Steps
+                  </p>
 
-                <div className="mt-5 pt-4 border-t border-slate-200 flex items-center gap-2">
-                  <MdOutlineVerifiedUser className="text-rose-600 text-base" />
-                  <span className="text-rose-700 text-xs font-bold">
-                    Verified · {doctor.council} Registered
-                  </span>
+                  <div className="mt-4 space-y-3">
+                    {[
+                      { n: "1", t: "Click “Book Now”" },
+                      { n: "2", t: "Fill basic details" },
+                      { n: "3", t: "Submit request" },
+                    ].map((s) => (
+                      <div key={s.n} className="flex items-center gap-3">
+                        <div className="w-9 h-9 rounded-xl bg-slate-900 text-white flex items-center justify-center font-extrabold text-sm">
+                          {s.n}
+                        </div>
+                        <p className="text-slate-700 text-sm font-semibold">
+                          {s.t}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="mt-6 rounded-xl border border-rose-100 bg-rose-50 px-4 py-3">
+                    <p className="text-rose-800 text-xs font-semibold">
+                      Need urgent help? Use “Call Now”.
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>

@@ -6,7 +6,6 @@ WHATSAPP CONFIG
 (wa.me me + nahi aata)
 ----------------------------- */
 const WHATSAPP_1 = "919827198000"; // +91 98271 98000
-const WHATSAPP_2 = "918120012121"; // +91 81200 12121
 
 /* -----------------------------
 WHATSAPP MODAL (2 NUMBERS)
@@ -51,14 +50,6 @@ const WhatsAppModal = ({ open, onClose, message }) => {
             className="w-full rounded-md bg-green-600 px-4 py-2 text-xs font-semibold text-white hover:bg-green-700 transition uppercase"
           >
             WhatsApp 98271 98000
-          </button>
-
-          <button
-            type="button"
-            onClick={() => openWhatsApp(WHATSAPP_2)}
-            className="w-full rounded-md border border-green-200 bg-white px-4 py-2 text-xs font-semibold text-green-700 hover:bg-green-50 transition uppercase"
-          >
-            WhatsApp 81200 12121
           </button>
 
           <button
@@ -326,19 +317,11 @@ ${formData.message}`;
                     </p>
 
                     <p className="mt-2 text-sm">
-                      <span className="text-slate-600">Mobile: </span>
                       <a
                         href="tel:+919827198000"
                         className="font-semibold text-[#F04E30] hover:underline"
                       >
                         +91 98271 98000
-                      </a>
-                      <span className="text-slate-400"> , </span>
-                      <a
-                        href="tel:+918120012121"
-                        className="font-semibold text-[#F04E30] hover:underline"
-                      >
-                        +91 81200 12121
                       </a>
                     </p>
 
@@ -352,15 +335,6 @@ ${formData.message}`;
                         className="font-semibold text-emerald-700 hover:underline"
                       >
                         98271 98000
-                      </a>
-                      <span className="text-slate-400"> , </span>
-                      <a
-                        href={`https://wa.me/${WHATSAPP_2}`}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="font-semibold text-emerald-700 hover:underline"
-                      >
-                        81200 12121
                       </a>
                     </p>
                   </div>

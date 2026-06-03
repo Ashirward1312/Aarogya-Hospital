@@ -1,7 +1,7 @@
 // src/components/AboutSection.jsx
-import React, { useEffect } from "react";
-import logo from "../images/logo1.jpg";
-import hospitalImg from "../images/a.webp";
+import React from "react";
+import logo from "../images/Aarogya Hospital Raipur.jpg";
+import hospitalImg from "../images/Best Super Speciality Hospital in Raipur.webp";
 
 const AboutSection = () => {
   return (
@@ -10,7 +10,7 @@ const AboutSection = () => {
       className="relative bg-gradient-to-br from-slate-50 via-slate-100 to-slate-200 py-16 sm:py-20 border-t border-slate-200"
     >
       <div className="mx-auto max-w-6xl px-6">
-        {/* Heading */}
+        {/* ================= HEADING ================= */}
         <div className="mx-auto max-w-3xl text-center">
           <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#F04E30]">
             About Aarogya Hospital
@@ -26,7 +26,7 @@ const AboutSection = () => {
           </p>
         </div>
 
-        {/* Stats */}
+        {/* ================= STATS ================= */}
         <div className="mt-6 flex flex-wrap justify-center gap-3 text-[12px]">
           <span className="rounded-full border border-slate-200 bg-slate-100 px-4 py-1.5 text-slate-800">
             100+ Beds
@@ -39,12 +39,12 @@ const AboutSection = () => {
           </span>
         </div>
 
-        {/* Main Grid */}
+        {/* ================= MAIN GRID ================= */}
         <div className="mt-12 grid items-start gap-10 lg:grid-cols-2">
-          {/* LEFT: CONTENT */}
-          <div className="space-y-7 text-sm sm:text-base leading-relaxed text-slate-700">
+          {/* ================= LEFT: CONTENT ================= */}
+          <div className="space-y-6 text-sm sm:text-base leading-relaxed text-slate-700">
             {/* Overview paragraphs */}
-            <div className="space-y-4">
+            <div className="space-y-3">
               <p>
                 Aarogya Hospital is a unit of{" "}
                 <b>Aarogya Hospital Research Centre Pvt. Ltd.</b>, a recognized
@@ -54,47 +54,47 @@ const AboutSection = () => {
 
               <p>
                 Established as a <b>Health Care Organization (HCO)</b>, the
-                hospital commenced its operations on{" "}
-                <b>30th November 2006</b>. Since then, we have remained
-                committed to delivering quality healthcare services with
-                integrity and compassion.
+                hospital commenced its operations on <b>30th November 2006</b>.
+                We remain committed to safe, ethical care with integrity and
+                compassion.
               </p>
 
               <p>
                 With over <b>19 years of clinical experience</b>, Aarogya
-                Hospital has earned the trust of the community by maintaining
-                high standards of patient safety, ethical medical practices, and
-                regulatory compliance.
+                Hospital has earned community trust through patient safety,
+                ethical medical practices, and regulatory compliance.
               </p>
 
               <p>
-                Our facility is equipped with ultra-modern operation theatres,
-                advanced ICUs, and a comprehensive trauma care unit to manage
-                complex and critical medical conditions.
+                Our facility includes ultra-modern operation theatres, advanced
+                ICUs, and a comprehensive trauma care unit for critical medical
+                needs.
               </p>
             </div>
 
-            {/* Compliance section */}
-            <div className="mt-4 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-              <div className="flex items-center gap-4">
-                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-slate-50">
+            {/* Compliance card (compact) */}
+            <div className="rounded-2xl border border-slate-200 bg-white p-4 sm:p-5 shadow-sm">
+              <div className="flex items-center gap-3">
+                <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-slate-50 border border-slate-200">
                   <img
                     src={logo}
                     alt="Aarogya Hospital"
-                    className="h-10 w-10 object-contain"
+                    className="h-8 w-8 object-contain"
+                    loading="lazy"
                   />
                 </div>
+
                 <div>
-                  <h3 className="text-lg font-semibold text-slate-900">
-                    Legal & Regulatory Compliance
+                  <h3 className="text-base sm:text-lg font-semibold text-slate-900">
+                    Legal &amp; Regulatory Compliance
                   </h3>
-                  <p className="text-sm text-slate-500">
+                  <p className="text-xs sm:text-sm text-slate-500">
                     Certified • Registered • Authorized
                   </p>
                 </div>
               </div>
 
-              <ul className="mt-5 space-y-3 text-sm text-slate-700">
+              <ul className="mt-4 space-y-2 text-xs sm:text-sm text-slate-700">
                 <li>
                   ✔ Type of Organization: <b>Health Care Organization (HCO)</b>
                 </li>
@@ -105,7 +105,7 @@ const AboutSection = () => {
                   ✔ Registration Authority: <b>CMHO</b>
                 </li>
                 <li>
-                  ✔ Shops & Establishment Act Registration:{" "}
+                  ✔ Shops &amp; Establishment Act Registration:{" "}
                   <b>RAIPOO19/HOS/R17</b>
                 </li>
                 <li>
@@ -113,50 +113,32 @@ const AboutSection = () => {
                   <b>5721/BMW/HO/CECB/2023</b>
                 </li>
                 <li>
-                  ✔ BMW Collection MOU:{" "}
-                  <b>SMS Watergrace Enviroprotect Pvt. Ltd. (40019654)</b>
-                </li>
-                <li>
-                  ✔ Pollution Control License (Water & Air):{" "}
+                  ✔ Pollution Control License (Water &amp; Air):{" "}
                   <b>5077/RO/TS/CECB/2023</b>
                 </li>
               </ul>
             </div>
           </div>
 
-          {/* RIGHT: IMAGE + MAP */}
-          <div className="space-y-6">
-            {/* Image card */}
+          {/* ================= RIGHT: IMAGE (slightly smaller now) ================= */}
+          <div className="lg:sticky lg:top-24">
             <div className="relative overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-md">
               <img
                 src={hospitalImg}
                 alt="Aarogya Hospital Building"
-                className="h-[320px] w-full object-contain object-center opacity-95 sm:h-[400px] md:h-[450px] lg:h-[500px] xl:h-[550px] 2xl:h-[580px]"
+                className="
+                  w-full object-cover object-center
+                  h-[420px]
+                  sm:h-[500px]
+                  md:h-[560px]
+                  lg:h-[600px]
+                  xl:h-[640px]
+                "
+                loading="lazy"
               />
 
-              {/* Soft overlay badge */}
-              <div className="absolute inset-x-0 bottom-0 p-4">
-                {/*  */}
-              </div>
-            </div>
-
-            {/* Map card */}
-            <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
-              <p className="px-4 py-2.5 text-xs font-medium text-[#F04E30] border-b border-slate-200 bg-slate-50 uppercase tracking-[0.12em]">
-                LOCATION MAP
-              </p>
-              <div className="h-64 w-full">
-                <iframe
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d232.40124538080124!2d81.6622531739687!3d21.254839115280692!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a28dd6f16e2ac29%3A0x739a132e13d1f0c8!2sAarogya%20Hospital%20%26%20Test%20Tube%20Baby%20Center!5e0!3m2!1sen!2sin!4v1767352740242!5m2!1sen!2sin"
-                  width="100%"
-                  height="100%"
-                  style={{ border: 0 }}
-                  allowFullScreen
-                  loading="lazy"
-                  referrerPolicy="no-referrer-when-downgrade"
-                  title="Aarogya Hospital – Super Speciality Hospital Location"
-                />
-              </div>
+              {/* Soft bottom gradient */}
+              <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-white/90 via-white/30 to-transparent" />
             </div>
           </div>
         </div>

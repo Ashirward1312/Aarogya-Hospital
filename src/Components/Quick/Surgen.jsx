@@ -24,9 +24,9 @@ import {
 import { GiStomach, GiScalpel, GiBandageRoll, GiKidneys } from "react-icons/gi";
 import { MdOutlineVerifiedUser, MdLocalHospital } from "react-icons/md";
 
-import Rishiimg from "../images/dr1.png";
-import suregn from "../images/op_.webp";
-import img from "../images/ss.png";
+import Rishiimg from "../images/General Surgeon in Raipur.webp";
+import suregn from "../images/General Surgery Hospital in  Raipur.webp";
+import img from "../images/Hospital in Raipur.webp";
 
 /* ─────────────────────── Reusable UI ─────────────────────── */
 
@@ -37,6 +37,8 @@ function Container({ children, className = "" }) {
     </div>
   );
 }
+
+
 
 function SectionTag({ children, dark = false }) {
   return (
@@ -66,7 +68,10 @@ function SectionHeader({
   desc,
   center = false,
   dark = false,
+  tittle,
+  subtitle,
 }) {
+  const displaySubtitle = subtitle || tittle;
   return (
     <div className={`flex flex-col gap-3 ${center ? "items-center text-center" : ""}`}>
       <SectionTag dark={dark}>{tag}</SectionTag>
@@ -91,6 +96,12 @@ function SectionHeader({
           </span>
         ) : null}
       </h2>
+
+      {displaySubtitle ? (
+        <p className={`text-base sm:text-lg font-bold tracking-tight -mt-1 ${dark ? "text-teal-300" : "text-teal-600"}`}>
+          {displaySubtitle}
+        </p>
+      ) : null}
 
       {desc ? (
         <p
@@ -138,11 +149,10 @@ function SecondaryButton({ href, children, dark = false }) {
 
 export default function DoctorLandingPage() {
   const navigate = useNavigate();
-  // अपना नंबर यहाँ डालें:
   const PHONE_NUMBER = "+919827198000";
   const PHONE_HREF = `tel:${PHONE_NUMBER}`;
 
-  const qualifications = ["MBBS", "MS", "FIAGES", "FMAS", "FALS"];
+  const qualifications = ["Best General & Laparoscopy Surgeon in Raipur"];
 
   const services = useMemo(
     () => [
@@ -184,7 +194,7 @@ export default function DoctorLandingPage() {
       },
       {
         title: "Piles (Hemorrhoids) Care",
-        icon: GiKidneys, // ✅ fixed (GiIntestine doesn't exist)
+        icon: GiKidneys,
         color: "from-rose-500 to-rose-700",
         bg: "bg-rose-50",
         border: "border-rose-100",
@@ -307,75 +317,105 @@ export default function DoctorLandingPage() {
     []
   );
 
+  const aboutCards = useMemo(
+    () => [
+      {
+        title: "Clinical Clarity",
+        desc: "Explain findings, options, and timelines in a simple, structured way.",
+        icon: FaClipboardList,
+      },
+      {
+        title: "Safety Protocols",
+        desc: "Standard checks and hygiene-focused practices for patient safety.",
+        icon: FaShieldAlt,
+      },
+      {
+        title: "Modern Approach",
+        desc: "Minimally invasive options considered when clinically appropriate.",
+        icon: FaProcedures,
+      },
+      {
+        title: "Recovery Support",
+        desc: "Follow-up planning with guidance on activity, diet, and warning signs.",
+        icon: FaHandHoldingMedical,
+      },
+    ],
+    []
+  );
+
   return (
     <div className="min-h-screen bg-white font-sans text-slate-900 antialiased">
       <Helmet>
-        <title>Dr. Rishi Kumar Agrawal | General Surgeon</title>
+        <title>Best General Surgery & Laparoscopy Hospital in Raipur (C.G)| Aarogya Hospital</title>
         <meta
           name="description"
-          content="Dr. Rishi Kumar Agrawal (MBBS, MS, FIAGES, FMAS, FALS) — General Surgeon providing safe, modern surgical care. CGMC Registration: 141/2004."
+          content="Get expert surgical care with modern techniques and complete guidance at Aarogya Hospital, the best general surgery hospital in Raipur (C.G). Led by Dr. Rishi Kumar Agrawal."
         />
+        <meta property="og:title" content="Best General Surgery & Laparoscopy Hospital in Raipur (C.G)| Aarogya Hospital" />
+        <meta property="og:type" content="website" />
+        <meta property="og:image" content="https://www.aarogyahospitalraipur.com/logo.png" />
+        <meta property="og:site_name" content="Aarogya Hospital Raipur" />
+        <meta property="og:description" content="Aarogya Hospital is the best general surgery & laparoscopy hospital in Raipur (C.G), offering advanced surgical care, expert surgeons, modern OT facilities, and safe treatment." />
+        <meta property="og:url" content="https://www.aarogyahospitalraipur.com/departments/general-laparoscopy-surgery-hospital-in-raipur" />
+        <meta property="og:locale" content="en_IN" />
+        <link rel="canonical" href="https://www.aarogyahospitalraipur.com/departments/general-laparoscopy-surgery-hospital-in-raipur" />
+        <link rel="preload" as="image" href={suregn} fetchPriority="high" />
       </Helmet>
 
-      {/* HERO (CTA here) */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-slate-900 via-[#0B1D35] to-slate-800">
-        <div className="pointer-events-none absolute inset-0 overflow-hidden">
-          <div className="absolute -top-40 -right-40 h-[500px] w-[500px] rounded-full bg-teal-500/10 blur-3xl" />
-          <div className="absolute -bottom-40 -left-40 h-[500px] w-[500px] rounded-full bg-blue-600/10 blur-3xl" />
-        </div>
+      {/* HERO */}
+      <section
+        className="relative overflow-hidden bg-slate-900"
+        style={{
+          background: `
+            radial-gradient(circle at top right, rgba(20, 184, 166, 0.1), transparent 400px),
+            radial-gradient(circle at bottom left, rgba(37, 99, 235, 0.1), transparent 400px),
+            linear-gradient(to bottom right, #0f172a, #0B1D35, #1e293b)
+          `,
+        }}
+      >
 
         <Container className="relative z-10 py-16 sm:py-20 lg:py-24">
-          {/* BACK BUTTON */}
-          <div className="mb-8">
-            <button
-              onClick={() => navigate(-1)}
-              className="inline-flex items-center justify-center gap-2 bg-white/10 backdrop-blur-md border border-white/20 text-white px-4 py-2 rounded-full shadow-lg hover:-translate-y-1 hover:shadow-xl hover:bg-white/20 transition-all duration-300 font-semibold text-sm"
-            >
-              <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-              </svg>
-              Back
-            </button>
-          </div>
+
+
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-            {/* Left */}
             <div className="flex flex-col gap-6">
               <div className="flex flex-wrap gap-2">
-                <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-teal-500/15 border border-teal-400/25 text-teal-200 text-[0.68rem] font-semibold tracking-[0.2em] uppercase">
-                  <span className="h-1.5 w-1.5 rounded-full bg-teal-300" />
-                  CGMC Reg. 141/2004
-                </span>
-                <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/8 border border-white/12 text-white/70 text-[0.68rem] font-semibold tracking-[0.2em] uppercase">
+                <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-teal-500/10 border border-teal-500/20 text-teal-200 text-[0.68rem] font-semibold tracking-[0.2em] uppercase">
                   <MdOutlineVerifiedUser className="text-teal-300" />
                   Verified Doctor
                 </span>
               </div>
 
-              <h1 className="text-4xl sm:text-5xl xl:text-[3.4rem] font-extrabold text-white leading-[1.08] tracking-tight">
-                Safe, Modern
+              <h1 className="text-4xl sm:text-5xl xl:text-[3.2rem] font-extrabold text-white leading-[1.1] tracking-tight">
+                Best General & Laparoscopy
                 <br />
+
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal-200 to-teal-400">
-                  General Surgery
+                  Surgery Hospital in Raipur
                 </span>
-                <br />
-                with Clear Guidance
               </h1>
 
-              <div className="inline-flex items-center gap-4 bg-white/6 border border-white/10 rounded-2xl px-4 py-3 w-fit backdrop-blur-sm">
+              <div className="flex flex-col gap-6">
+                <p className="text-white/80 text-sm sm:text-base leading-relaxed max-w-2xl">
+                  Get expert surgical care with modern techniques and complete guidance at every step at Aarogya Hospital, one of the best general & laparoscopy surgery hospitals in Raipur (C.G).
+                </p>
+                <p className="text-white/70 text-sm sm:text-[0.95rem] leading-relaxed max-w-2xl">
+                  Led by experienced surgeon Dr. Rishi Kumar Agrawal, our department provides evidence-based surgical treatment with a strong focus on patient safety, clear communication, and faster recovery. From consultation to post-surgery care, we ensure you feel informed, confident, and supported throughout your treatment journey.
+                </p>
+              </div>
+
+              <div className="inline-flex items-center gap-4 bg-white/5 border border-white/10 rounded-2xl px-4 py-3 w-fit shadow-lg shadow-black/20">
                 <img
                   src={Rishiimg}
                   alt="Dr. Rishi Kumar Agrawal"
+                  width="56"
+                  height="56"
                   className="h-14 w-14 rounded-xl object-cover object-top ring-2 ring-teal-400/30 flex-shrink-0"
-                  loading="eager"
+                  fetchPriority="high"
                 />
                 <div>
-                  <p className="text-white font-semibold text-sm">
-                    Dr. Rishi Kumar Agrawal
-                  </p>
-                  <p className="text-teal-200 text-xs font-semibold mt-0.5">
-                    General Surgeon
-                  </p>
-                  <div className="flex flex-wrap items-center gap-1.5 mt-1">
+                  <p className="text-white font-semibold text-sm">Dr. Rishi Kumar Agrawal</p>
+                  <div className="flex flex-wrap items-center gap-1.5 mt-1.5">
                     {qualifications.map((q) => (
                       <span key={q} className="text-white/50 text-[0.62rem] font-semibold">
                         {q}
@@ -385,12 +425,6 @@ export default function DoctorLandingPage() {
                 </div>
               </div>
 
-              <p className="text-white/65 text-sm sm:text-base leading-relaxed max-w-lg">
-                Evidence-based surgical care with a focus on safety protocols, respectful communication,
-                and recovery planning—so you know what to expect at every step.
-              </p>
-
-              {/* Only CTA here */}
               <div className="flex flex-wrap gap-3">
                 <PrimaryButton href="/appointment">
                   <FaCalendarCheck />
@@ -402,42 +436,23 @@ export default function DoctorLandingPage() {
                   Call Now
                 </SecondaryButton>
               </div>
-
-              <div className="grid grid-cols-3 gap-3 pt-2">
-                {[
-                  { label: "Council", value: "CGMC" },
-                  { label: "Reg. No.", value: "141/2004" },
-                  { label: "Care Style", value: "Patient-first" },
-                ].map((s) => (
-                  <div
-                    key={s.label}
-                    className="rounded-2xl border border-white/8 bg-white/5 px-4 py-4 text-center backdrop-blur-sm"
-                  >
-                    <p className="text-white/40 text-[0.62rem] font-semibold tracking-[0.18em] uppercase">
-                      {s.label}
-                    </p>
-                    <p className="text-white text-xs font-bold mt-1">{s.value}</p>
-                  </div>
-                ))}
-              </div>
             </div>
 
-            {/* Right */}
             <div className="relative">
               <div className="relative rounded-3xl overflow-hidden border border-white/10 shadow-2xl shadow-black/40">
                 <img
                   src={suregn}
                   alt="Modern operating theatre"
+                  width="800"
+                  height="480"
                   className="w-full h-[320px] sm:h-[400px] lg:h-[480px] object-cover"
-                  loading="eager"
+                  fetchPriority="high"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/20 to-transparent" />
 
                 <div className="absolute bottom-0 left-0 right-0 p-5">
-                  <div className="rounded-2xl border border-white/15 bg-white/8 p-4 backdrop-blur-md">
-                    <p className="text-white font-semibold text-sm">
-                      Safety-led Surgical Pathway
-                    </p>
+                  <div className="rounded-2xl border border-white/15 bg-slate-900/80 p-4">
+                    <p className="text-white font-semibold text-sm">Safety-led Surgical Pathway</p>
                     <p className="text-white/65 text-xs mt-1 leading-relaxed">
                       Accurate diagnosis • Clear consultation • Modern technique • Guided recovery
                     </p>
@@ -454,45 +469,25 @@ export default function DoctorLandingPage() {
                   </div>
                 </div>
               </div>
-
-              <div className="absolute -top-4 -right-4 bg-white rounded-2xl shadow-xl border border-slate-100 px-4 py-3 hidden sm:block">
-                <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 rounded-xl bg-teal-50 border border-teal-100 flex items-center justify-center">
-                    <MdOutlineVerifiedUser className="text-teal-600 text-base" />
-                  </div>
-                  <div>
-                    <p className="text-slate-900 font-bold text-xs">Verified Surgeon</p>
-                    <p className="text-slate-500 text-[0.65rem]">CGMC · 141/2004</p>
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
         </Container>
       </section>
 
-      {/* ABOUT (Name highlighted) */}
+      {/* ABOUT */}
       <section id="about" className="py-20 bg-slate-50">
         <Container>
           <div className="grid lg:grid-cols-2 gap-14 lg:gap-20 items-center">
-            {/* Image */}
             <div className="relative">
               <div className="rounded-3xl overflow-hidden border border-slate-200 shadow-xl shadow-slate-200/60 bg-white">
                 <img
                   src={Rishiimg}
                   alt="Dr. Rishi Kumar Agrawal"
+                  width="600"
+                  height="520"
                   className="w-full h-[480px] sm:h-[520px] object-cover object-top"
                   loading="lazy"
                 />
-              </div>
-
-              <div className="absolute top-5 left-5 bg-white rounded-2xl shadow-lg border border-slate-100 px-4 py-3">
-                <p className="text-teal-700 text-[0.65rem] font-semibold uppercase tracking-[0.2em]">
-                  CGMC Registered
-                </p>
-                <p className="text-slate-900 font-bold text-sm mt-0.5">
-                  Reg. No. 141/2004
-                </p>
               </div>
 
               <div className="absolute -bottom-5 -right-5 w-24 h-24 rounded-2xl bg-gradient-to-br from-teal-500 to-blue-600 shadow-lg shadow-teal-500/30 flex flex-col items-center justify-center">
@@ -503,13 +498,12 @@ export default function DoctorLandingPage() {
               </div>
             </div>
 
-            {/* Content */}
             <div className="flex flex-col gap-6">
               <SectionHeader
                 tag="About the Doctor"
-                title="Meet"
-                highlight="Dr. Rishi Kumar Agrawal"
-                desc="A General Surgeon focused on safe, evidence-based care with clear communication—before surgery, during treatment, and throughout recovery."
+               highlight="Dr. Rishi Kumar Agrawal"
+                tittle="Best General & Laparoscopic Surgeon In Raipur"
+                desc="A General & Laparoscopic Surgeon focused on safe, evidence-based care with clear communication—before surgery, during treatment, and throughout recovery."
               />
 
               <p className="text-slate-600 text-sm leading-relaxed">
@@ -517,7 +511,7 @@ export default function DoctorLandingPage() {
                 clearly, along with the most suitable next steps.
               </p>
 
-              <div className="flex flex-wrap gap-2">
+              {/* <div className="flex flex-wrap gap-2">
                 {qualifications.map((q) => (
                   <span
                     key={q}
@@ -526,46 +520,29 @@ export default function DoctorLandingPage() {
                     {q}
                   </span>
                 ))}
-              </div>
+              </div> */}
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {[
-                  {
-                    title: "Clinical Clarity",
-                    desc: "Explain findings, options, and timelines in a simple, structured way.",
-                    icon: "🩺",
-                  },
-                  {
-                    title: "Safety Protocols",
-                    desc: "Standard checks and hygiene-focused practices for patient safety.",
-                    icon: "🛡️",
-                  },
-                  {
-                    title: "Modern Approach",
-                    desc: "Minimally invasive options considered when clinically appropriate.",
-                    icon: "⚕️",
-                  },
-                  {
-                    title: "Recovery Support",
-                    desc: "Follow-up planning with guidance on activity, diet, and warning signs.",
-                    icon: "📌",
-                  },
-                ].map((card) => (
-                  <div
-                    key={card.title}
-                    className="rounded-2xl bg-white border border-slate-200/80 px-5 py-5 shadow-sm hover:shadow-md hover:border-teal-200 transition-all duration-200 flex flex-col gap-3"
-                  >
-                    <div className="w-10 h-10 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-center text-xl">
-                      {card.icon}
+                {aboutCards.map((card) => {
+                  const Icon = card.icon;
+                  return (
+                    <div
+                      key={card.title}
+                      className="rounded-2xl bg-white border border-slate-200/80 px-5 py-5 shadow-sm hover:shadow-md hover:border-teal-200 transition-all duration-200 flex flex-col gap-3"
+                    >
+                      <div className="w-10 h-10 rounded-xl bg-teal-50 border border-teal-100 flex items-center justify-center text-teal-600">
+                        <Icon className="text-lg" />
+                      </div>
+                      <div>
+                        <h3 className="text-slate-900 font-semibold text-sm">{card.title}</h3>
+                        <p className="text-slate-500 text-xs leading-relaxed mt-1.5">{card.desc}</p>
+                      </div>
                     </div>
-                    <div>
-                      <h3 className="text-slate-900 font-semibold text-sm">{card.title}</h3>
-                      <p className="text-slate-500 text-xs leading-relaxed mt-1.5">{card.desc}</p>
-                    </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
 
+              {/* Council/CGMC/Reg/Care Style: only one place */}
               <div className="rounded-2xl bg-gradient-to-r from-teal-50 to-blue-50 border border-teal-100 px-5 py-4">
                 <div className="flex items-center justify-between gap-4">
                   <div>
@@ -573,6 +550,7 @@ export default function DoctorLandingPage() {
                     <p className="text-slate-600 text-xs mt-1">
                       Medical Council: <span className="font-bold text-slate-800">CGMC</span>
                       {" · "}Reg. No.: <span className="font-bold text-slate-800">141/2004</span>
+                      {" · "}Care Style: <span className="font-bold text-slate-800">Patient-first</span>
                     </p>
                   </div>
                   <div className="flex items-center gap-1.5 bg-teal-600 text-white px-3 py-1.5 rounded-xl text-xs font-bold">
@@ -581,8 +559,6 @@ export default function DoctorLandingPage() {
                   </div>
                 </div>
               </div>
-
-              {/* CTA intentionally not here */}
             </div>
           </div>
         </Container>
@@ -615,9 +591,7 @@ export default function DoctorLandingPage() {
 
                   <div className="flex flex-col flex-1 mt-5">
                     <h3 className="text-slate-900 font-semibold text-sm">{s.title}</h3>
-                    <p className="text-slate-500 text-xs leading-relaxed mt-2 flex-1">
-                      {s.desc}
-                    </p>
+                    <p className="text-slate-500 text-xs leading-relaxed mt-2 flex-1">{s.desc}</p>
                   </div>
 
                   <div
@@ -643,10 +617,17 @@ export default function DoctorLandingPage() {
 
           <div className="mt-12 grid lg:grid-cols-2 gap-10 items-stretch">
             <div className="relative rounded-3xl overflow-hidden border border-slate-200 shadow-xl shadow-slate-200/50 h-[420px] lg:h-auto min-h-[420px]">
-              <img src={img} alt="Operating theatre" className="w-full h-full object-cover" loading="lazy" />
-              <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-slate-900/20 to-transparent" />
+              <img
+                src={img}
+                alt="Operating theatre"
+                width="600"
+                height="420"
+                className="w-full h-full object-cover"
+                loading="lazy"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-transparent to-transparent" />
               <div className="absolute bottom-0 left-0 right-0 p-6">
-                <div className="rounded-2xl border border-white/15 bg-white/8 p-4 backdrop-blur-md">
+                <div className="rounded-2xl border border-white/15 bg-slate-900/40 p-4">
                   <p className="text-white font-semibold text-sm">Safety-first Protocols</p>
                   <p className="text-white/70 text-xs leading-relaxed mt-1">
                     Standardized checks, careful anesthesia planning, and post-operative monitoring for a smooth recovery.
@@ -665,7 +646,7 @@ export default function DoctorLandingPage() {
                       className="flex items-start gap-5 px-7 py-6 hover:bg-slate-50 transition-colors duration-200"
                     >
                       <div className="flex flex-col items-center flex-shrink-0">
-                        <div className="w-10 h-10 rounded-xl bg-slate-900 text-white flex items-center justify-center font-bold text-sm flex-shrink-0">
+                        <div className="w-10 h-10 rounded-xl bg-slate-900 text-white flex items-center justify-center font-bold text-sm">
                           {idx + 1}
                         </div>
                       </div>
@@ -685,9 +666,7 @@ export default function DoctorLandingPage() {
               </div>
 
               <div className="px-7 py-5 bg-slate-50 border-t border-slate-100">
-                <p className="text-slate-500 text-xs">
-                  For appointment booking, use the booking section below.
-                </p>
+                <p className="text-slate-500 text-xs">For appointment booking, use the booking section below.</p>
               </div>
             </div>
           </div>
@@ -713,9 +692,7 @@ export default function DoctorLandingPage() {
                   key={w.title}
                   className="group flex flex-col rounded-2xl border border-slate-200 bg-white p-7 shadow-sm hover:shadow-lg hover:border-teal-200 hover:-translate-y-1 transition-all duration-300"
                 >
-                  <div
-                    className={`w-12 h-12 rounded-2xl ${w.bg} border ${w.border} flex items-center justify-center ${w.iconColor} text-xl`}
-                  >
+                  <div className={`w-12 h-12 rounded-2xl ${w.bg} border ${w.border} flex items-center justify-center ${w.iconColor} text-xl`}>
                     <Icon />
                   </div>
                   <h3 className="mt-5 text-slate-900 font-semibold text-sm">{w.title}</h3>
@@ -731,12 +708,15 @@ export default function DoctorLandingPage() {
       {/* TRUST */}
       <section
         id="trust"
-        className="py-20 bg-gradient-to-br from-slate-900 via-[#0B1D35] to-slate-800 relative overflow-hidden"
+        className="py-20 bg-slate-900 relative overflow-hidden"
+        style={{
+          background: `
+            radial-gradient(circle at 100% 0%, rgba(20, 184, 166, 0.08), transparent 300px),
+            radial-gradient(circle at 0% 100%, rgba(37, 99, 235, 0.08), transparent 300px),
+            #0f172a
+          `,
+        }}
       >
-        <div className="pointer-events-none absolute inset-0">
-          <div className="absolute -top-32 -right-32 h-[400px] w-[400px] rounded-full bg-teal-500/8 blur-3xl" />
-          <div className="absolute -bottom-32 -left-32 h-[400px] w-[400px] rounded-full bg-blue-600/8 blur-3xl" />
-        </div>
 
         <Container className="relative z-10">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
@@ -761,28 +741,11 @@ export default function DoctorLandingPage() {
                 ))}
               </div>
 
-              <div className="flex items-center justify-between bg-white/6 border border-white/10 rounded-2xl px-5 py-4 backdrop-blur-sm">
-                <div>
-                  <p className="text-white/40 text-[0.65rem] uppercase tracking-[0.2em] font-semibold">
-                    Medical Council
-                  </p>
-                  <p className="text-white/80 text-sm mt-1">
-                    CGMC · Reg. No. <span className="text-white font-bold">141/2004</span>
-                  </p>
-                </div>
-                <div className="flex items-center gap-2 bg-teal-500 text-white px-4 py-2 rounded-xl text-xs font-bold">
-                  <MdOutlineVerifiedUser />
-                  Verified
-                </div>
-              </div>
-
               <div className="flex items-center gap-1">
                 {[...Array(5)].map((_, i) => (
                   <FaStar key={i} className="text-amber-400 text-sm" />
                 ))}
-                <span className="text-white/55 text-xs ml-2">
-                  Patient-first care always
-                </span>
+                <span className="text-white/55 text-xs ml-2">Patient-first care always</span>
               </div>
             </div>
 
@@ -811,9 +774,7 @@ export default function DoctorLandingPage() {
                 </ul>
 
                 <div className="mt-6 pt-6 border-t border-slate-100">
-                  <p className="text-slate-500 text-xs">
-                    For appointments, scroll to the booking section.
-                  </p>
+                  <p className="text-slate-500 text-xs">For appointments, scroll to the booking section below.</p>
                 </div>
               </div>
             </div>
@@ -821,85 +782,66 @@ export default function DoctorLandingPage() {
         </Container>
       </section>
 
-      {/* FINAL CTA (Only CTA here) */}
-      <section id="cta" className="py-20 bg-slate-50">
+      {/* ✅ PREMIUM + SIMPLE BOOKING (no doctor card, no council/reg, no qualifications) */}
+      <section id="cta" className="py-20 bg-white">
         <Container>
-          <div className="relative overflow-hidden rounded-3xl bg-white border border-slate-200 shadow-xl shadow-slate-200/50 p-8 sm:p-12">
-            <div className="pointer-events-none absolute top-0 right-0 w-64 h-64 rounded-full bg-teal-50 blur-3xl -translate-y-1/2 translate-x-1/2" />
-            <div className="pointer-events-none absolute bottom-0 left-0 w-48 h-48 rounded-full bg-blue-50 blur-3xl translate-y-1/2 -translate-x-1/2" />
+          <div className="relative overflow-hidden rounded-3xl border border-slate-200 shadow-xl shadow-slate-200/50">
+            <div className="absolute inset-0 bg-gradient-to-br from-teal-50 via-white to-sky-50" />
+            <div className="pointer-events-none absolute -top-24 -right-24 h-72 w-72 rounded-full bg-teal-200/40 blur-3xl" />
+            <div className="pointer-events-none absolute -bottom-28 -left-28 h-80 w-80 rounded-full bg-sky-200/40 blur-3xl" />
 
-            <div className="relative grid lg:grid-cols-[1fr_auto] gap-10 items-center">
-              <div className="flex flex-col gap-5">
-                <SectionTag>Book Appointment</SectionTag>
+            <div className="relative p-8 sm:p-12">
+              <div className="grid lg:grid-cols-[1.2fr_0.8fr] gap-10 items-center">
+                <div className="flex flex-col gap-5">
+                  <SectionTag>Appointment</SectionTag>
 
-                <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 leading-tight tracking-tight">
-                  Get Safe & Modern
-                  <br />
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal-600 to-teal-500">
-                    Surgical Care
-                  </span>
-                </h2>
-
-                <p className="text-slate-500 text-sm sm:text-base leading-relaxed max-w-lg">
-                  Schedule a consultation to discuss symptoms, investigations, and the most suitable treatment plan—
-                  built around safety, clarity, and recovery support.
-                </p>
-
-                <div className="flex flex-wrap gap-3">
-                  <PrimaryButton href="/appointment">
-                    <FaCalendarCheck />
+                  <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 leading-tight tracking-tight">
                     Book Appointment
-                  </PrimaryButton>
+                    <span className="block text-transparent bg-clip-text bg-gradient-to-r from-teal-600 to-teal-500">
+                      in 1 Minute
+                    </span>
+                  </h2>
 
-                  <SecondaryButton href={PHONE_HREF}>
-                    <FaPhoneAlt className="text-teal-600" />
-                    Call: {PHONE_NUMBER}
-                  </SecondaryButton>
-                </div>
+                  <p className="text-slate-600 text-sm sm:text-base leading-relaxed max-w-2xl">
+                    Book karne ke liye “Book Now” par click karein, ya urgent help ke liye call karein.
+                  </p>
 
-                <p className="text-slate-400 text-xs">
-                  Please bring prior reports, current medicines, and recent investigation results (if available).
-                </p>
-              </div>
+                  <div className="flex flex-wrap gap-3">
+                    <PrimaryButton href="/appointment">
+                      <FaCalendarCheck />
+                      Book Now
+                    </PrimaryButton>
 
-              <div className="bg-slate-50 border border-slate-200 rounded-2xl p-6 min-w-[240px] lg:min-w-[280px]">
-                <div className="flex items-center gap-3 pb-4 border-b border-slate-200">
-                  <img
-                    src={Rishiimg}
-                    alt="Dr. Rishi Kumar Agrawal"
-                    className="w-12 h-12 rounded-xl object-cover object-top border border-slate-200"
-                    loading="lazy"
-                  />
-                  <div>
-                    <p className="text-slate-900 font-semibold text-sm">
-                      Dr. Rishi Kumar Agrawal
-                    </p>
-                    <p className="text-teal-600 text-xs font-semibold">General Surgeon</p>
+                    <SecondaryButton href={PHONE_HREF}>
+                      <FaPhoneAlt className="text-teal-700" />
+                      Call Now
+                    </SecondaryButton>
                   </div>
                 </div>
 
-                <div className="mt-4 flex flex-col gap-3">
-                  {[
-                    { label: "Qualifications", value: "MBBS, MS, FIAGES, FMAS, FALS" },
-                    { label: "CGMC Registration", value: "141/2004" },
-                    { label: "Specialization", value: "General Surgery" },
-                    { label: "Care Focus", value: "Safety-led & recovery-focused" },
-                  ].map((row) => (
-                    <div key={row.label} className="flex items-start gap-2">
-                      <span className="mt-2 h-1.5 w-1.5 rounded-full bg-teal-500 flex-shrink-0" />
-                      <p className="text-slate-600 text-xs leading-relaxed">
-                        <span className="text-slate-400">{row.label}:</span>{" "}
-                        <span className="text-slate-800 font-semibold">{row.value}</span>
-                      </p>
-                    </div>
-                  ))}
-                </div>
+                <div className="rounded-2xl border border-slate-200 bg-white/70 backdrop-blur-md p-6 shadow-sm">
+                  <p className="text-slate-900 font-extrabold text-base">Quick Steps</p>
 
-                <div className="mt-5 pt-4 border-t border-slate-200 flex items-center gap-2">
-                  <MdOutlineVerifiedUser className="text-teal-600 text-base" />
-                  <span className="text-teal-700 text-xs font-bold">
-                    Verified · CGMC Registered
-                  </span>
+                  <div className="mt-4 space-y-3">
+                    {[
+                      { n: "1", t: "Click “Book Now”" },
+                      { n: "2", t: "Fill basic details" },
+                      { n: "3", t: "Submit request" },
+                    ].map((s) => (
+                      <div key={s.n} className="flex items-center gap-3">
+                        <div className="w-9 h-9 rounded-xl bg-slate-900 text-white flex items-center justify-center font-extrabold text-sm">
+                          {s.n}
+                        </div>
+                        <p className="text-slate-700 text-sm font-semibold">{s.t}</p>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="mt-6 rounded-xl border border-teal-100 bg-teal-50 px-4 py-3">
+                    <p className="text-teal-800 text-xs font-semibold">
+                      Need urgent help? Use “Call Now”.
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
